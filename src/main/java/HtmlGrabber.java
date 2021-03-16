@@ -1,5 +1,19 @@
-/*
-    Responsible for retrieving & parsing HTML from a given page.
- */
+import java.util.ArrayList;
+
 public class HtmlGrabber {
+    private static final int BROKEN_LINK_DEPTH_DEFAULT = 2;
+
+    private String url;
+    private int brokenLinkDepth;
+    private ArrayList<HtmlGrabber> adjacentPages;
+
+    public HtmlGrabber(String url) {
+        this.adjacentPages = new ArrayList<>();
+        this.url = url;
+    }
+
+    public HtmlGrabber(String url, int brokenLinkDepth) {
+        this(url);
+        this.brokenLinkDepth = brokenLinkDepth;
+    }
 }
