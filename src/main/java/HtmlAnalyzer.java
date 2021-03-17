@@ -1,5 +1,5 @@
-/*
-    Provides statistics over the parsed HTML object of the HtmlGrabber class.
+/**
+ * Provide statistics over an HtmlGrabber object.
  */
 public class HtmlAnalyzer {
 }
