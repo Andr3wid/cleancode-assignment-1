@@ -2,7 +2,7 @@
 * Main class handles command line argument parsing and initial call to the HtmlGrabber.
  */
 
-public class Main {
+public class CliRunner {
 
     static HtmlGrabber topLevelGrabber;
     static CliArgParsingState state;
@@ -10,7 +10,7 @@ public class Main {
     public static void main(String[] args) {
 
         if (args.length == 1 || args.length == 2) {
-            Main.topLevelGrabber = getGrabberByCliArguments(args);
+            CliRunner.topLevelGrabber = getGrabberByCliArguments(args);
         } else {
             handleUnexpectedParameters("Unexpected number of arguments!", CliArgParsingState.UNEXPECTED_NUMBER_OF_ARGS);
         }
@@ -23,7 +23,7 @@ public class Main {
      * @param state The state that should be set.
      */
     private static void handleUnexpectedParameters(String message, CliArgParsingState state) {
-        Main.state = state;
+        CliRunner.state = state;
 
         System.out.println("Error while invoking jhg: " + message);
         System.out.println("Intended usage: java -jar jhg.jar <URL> <OPTIONAL: RECURSION_DEPTH; default value=2>");
@@ -45,7 +45,7 @@ public class Main {
             url = args[0];
             brokenLinkDepth = args.length == 2 ? Integer.parseInt(args[1]) : HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT;
             instantiatedGrabber = new HtmlGrabber(url, brokenLinkDepth);
-            Main.state = CliArgParsingState.ARG_PARSING_SUCCESS;
+            CliRunner.state = CliArgParsingState.ARG_PARSING_SUCCESS;
         } catch(Exception e) {
             instantiatedGrabber = null;
             handleUnexpectedParameters("Second argument must be a number!", CliArgParsingState.ARG_PARSING_ERROR);
@@ -55,10 +55,10 @@ public class Main {
     }
 
     public static CliArgParsingState getState() {
-        return Main.state;
+        return CliRunner.state;
     }
 
     public static HtmlGrabber getGrabber() {
-        return Main.topLevelGrabber;
+        return CliRunner.topLevelGrabber;
     }
 }
