@@ -61,4 +61,8 @@ public class CliRunner {
     public static HtmlGrabber getGrabber() {
         return CliRunner.topLevelGrabber;
     }
+
+    public static void resetGrabber() {
+        CliRunner.topLevelGrabber = null;
+    }
 }

@@ -1,8 +1,14 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class CliRunnerTests {
     private final String VALID_TEST_URL = "https://www.google.at";
+
+    @BeforeEach
+    void resetMainGrabber() {
+        CliRunner.resetGrabber();
+    }
 
     @Test
     void singleValidCliArgument() {
