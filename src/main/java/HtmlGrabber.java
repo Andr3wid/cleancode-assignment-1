@@ -6,9 +6,9 @@ import java.util.ArrayList;
 public class HtmlGrabber {
     public static final int BROKEN_LINK_DEPTH_DEFAULT = 2;
 
-    private String url;
+    private final String url;
     private int brokenLinkDepth;
-    private ArrayList<HtmlGrabber> adjacentPages;
+    private final ArrayList<HtmlGrabber> adjacentPages;
 
     public HtmlGrabber(String url) {
         this.adjacentPages = new ArrayList<>();
@@ -18,5 +18,22 @@ public class HtmlGrabber {
     public HtmlGrabber(String url, int brokenLinkDepth) {
         this(url);
         this.brokenLinkDepth = brokenLinkDepth;
+    }
+
+    // GETTER & SETTER section
+    public static int getBrokenLinkDepthDefault() {
+        return BROKEN_LINK_DEPTH_DEFAULT;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public int getBrokenLinkDepth() {
+        return brokenLinkDepth;
+    }
+
+    public ArrayList<HtmlGrabber> getAdjacentPages() {
+        return adjacentPages;
     }
 }
