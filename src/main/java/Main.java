@@ -4,16 +4,15 @@
 
 public class Main {
 
-    static HtmlGrabber grabbedHtml;
+    static HtmlGrabber topLevelGrabber;
+    static CliArgParsingState state;
 
     public static void main(String[] args) {
 
-        if (args.length == 1) {
-            Main.grabbedHtml = new HtmlGrabber(args[0]);
-        } else if (args.length == 2) {
-            getGrabberByCliArguments(args);
+        if (args.length == 1 || args.length == 2) {
+            Main.topLevelGrabber = getGrabberByCliArguments(args);
         } else {
-            handleUnexpectedParameters("Unexpected number of arguments!");
+            handleUnexpectedParameters("Unexpected number of arguments!", CliArgParsingState.UNEXPECTED_NUMBER_OF_ARGS);
         }
 
     }
@@ -21,31 +20,45 @@ public class Main {
     /**
      * Print specified message along with usage information and exit the program.
      * @param message The message to be displayed.
+     * @param state The state that should be set.
      */
-    private static void handleUnexpectedParameters(String message) {
+    private static void handleUnexpectedParameters(String message, CliArgParsingState state) {
+        Main.state = state;
+
         System.out.println("Error while invoking jhg: " + message);
         System.out.println("Intended usage: java -jar jhg.jar <URL> <OPTIONAL: RECURSION_DEPTH; default value=2>");
         System.out.println("Examples: ");
         System.out.println("java -jar jhg.jar https://www.google.at 2");
         System.out.println("java -jar jhg.jar https://www.google.at\n");
-        System.exit(0);
     }
 
     /**
      * Instantiate the top-level HtmlGrabber by trying to parse CLI arguments.
      * @param args The argument-array.
      */
-    private static void getGrabberByCliArguments(String[] args) {
+    private static HtmlGrabber getGrabberByCliArguments(String[] args) {
         int brokenLinkDepth;
         String url;
+        HtmlGrabber instantiatedGrabber;
 
         try {
             url = args[0];
-            brokenLinkDepth = Integer.parseInt(args[1]);
-            Main.grabbedHtml = new HtmlGrabber(url, brokenLinkDepth);
+            brokenLinkDepth = args.length == 2 ? Integer.parseInt(args[1]) : HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT;
+            instantiatedGrabber = new HtmlGrabber(url, brokenLinkDepth);
+            Main.state = CliArgParsingState.ARG_PARSING_SUCCESS;
         } catch(Exception e) {
-            handleUnexpectedParameters("Second argument must be a number!");
+            instantiatedGrabber = null;
+            handleUnexpectedParameters("Second argument must be a number!", CliArgParsingState.ARG_PARSING_ERROR);
         }
+
+        return instantiatedGrabber;
     }
 
+    public static CliArgParsingState getState() {
+        return Main.state;
+    }
+
+    public static HtmlGrabber getGrabber() {
+        return Main.topLevelGrabber;
+    }
 }

@@ -1,6 +1,6 @@
-HtmlAnalyzer.java
- HtmlAnalyzer
 Main.java
  Main
+HtmlAnalyzer.java
+ HtmlAnalyzer
 HtmlGrabber.java
  HtmlGrabber

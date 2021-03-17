@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * Grabs HTML from a given URL, parses it and recursively grabs linked resources.
  */
 public class HtmlGrabber {
-    private static final int BROKEN_LINK_DEPTH_DEFAULT = 2;
+    public static final int BROKEN_LINK_DEPTH_DEFAULT = 2;
 
     private String url;
     private int brokenLinkDepth;
