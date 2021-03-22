@@ -30,4 +30,10 @@ public class HtmlGrabberTests {
         Assertions.assertEquals(HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT, grabber.getBrokenLinkDepth());
     }
 
+    @Test
+    void testWordCountComplex() {
+        // TODO: Verify
+        Assertions.assertEquals(-1, grabber.countNumberOfWords());
+    }
+
 }

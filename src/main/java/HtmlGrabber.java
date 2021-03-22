@@ -1,7 +1,11 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.TextNode;
+import org.jsoup.select.Elements;
 
 /**
  * Grabs HTML from a given URL, parses it and recursively grabs linked resources.
@@ -26,6 +30,22 @@ public class HtmlGrabber {
         this.brokenLinkDepth = brokenLinkDepth;
     }
 
+    public int countNumberOfWords() {
+        int wordCount = 0;
+        List<TextNode> textNodes = this.grabbedHtml.textNodes();
+
+        String [] wordsOfTextNode;
+        for (TextNode t : textNodes) {
+            wordsOfTextNode = t.getWholeText().split(" ");
+            wordCount += wordsOfTextNode.length;
+        }
+        return wordCount;
+    }
+
+    public int countNumberOfLinks() {
+        return -1;
+    }
+
     // GETTER & SETTER section
     public static int getBrokenLinkDepthDefault() {
         return BROKEN_LINK_DEPTH_DEFAULT;
@@ -37,6 +57,10 @@ public class HtmlGrabber {
 
     public int getBrokenLinkDepth() {
         return brokenLinkDepth;
+    }
+
+    public void setBrokenLinkDepth(int brokenLinkDepth) {
+        this.brokenLinkDepth = brokenLinkDepth;
     }
 
     public ArrayList<HtmlGrabber> getAdjacentPages() {
