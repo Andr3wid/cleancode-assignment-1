@@ -1,18 +1,0 @@
-<Error while invoking jhg: Second argument must be a number!
-UIntended usage: java -jar jhg.jar <URL> <OPTIONAL: RECURSION_DEPTH; default value=2>
-Examples: 
-*java -jar jhg.jar https://www.google.at 2
-(java -jar jhg.jar https://www.google.at
-
-:Error while invoking jhg: Unexpected number of arguments!
-UIntended usage: java -jar jhg.jar <URL> <OPTIONAL: RECURSION_DEPTH; default value=2>
-Examples: 
-*java -jar jhg.jar https://www.google.at 2
-(java -jar jhg.jar https://www.google.at
-
-:Error while invoking jhg: Unexpected number of arguments!
-UIntended usage: java -jar jhg.jar <URL> <OPTIONAL: RECURSION_DEPTH; default value=2>
-Examples: 
-*java -jar jhg.jar https://www.google.at 2
-(java -jar jhg.jar https://www.google.at
-
