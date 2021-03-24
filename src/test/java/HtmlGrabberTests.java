@@ -7,12 +7,13 @@ import java.io.IOException;
 public class HtmlGrabberTests {
 
     HtmlGrabber grabber;
-    final String TEST_URL1 = "https://www.aau.at/";
+    final String TEST_URL_ENGLISH_SIMPLE = "http://andref.xyz/";
+    final String TEST_URL_GERMAN_SIMPLE = "http://andref.xyz/german.html";
 
     @BeforeEach
     void setupValidGrabber() {
         try {
-            grabber = new HtmlGrabber(TEST_URL1);
+            grabber = new HtmlGrabber(TEST_URL_ENGLISH_SIMPLE);
         } catch(IOException e) {
             e.printStackTrace();
         }
@@ -31,9 +32,19 @@ public class HtmlGrabberTests {
     }
 
     @Test
-    void testWordCountComplex() {
-        // TODO: Verify
-        Assertions.assertEquals(-1, grabber.countNumberOfWords());
+    void testWordCountEnglishText() {
+        final int wordsOnNginxDefaultPage = 43;
+        Assertions.assertEquals(wordsOnNginxDefaultPage, grabber.countNumberOfWords());
+    }
+
+    @Test
+    void testWordCountGermanText() {
+        final int wordsOnPage = 34;
+        try {
+            grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
     }
 
 }
