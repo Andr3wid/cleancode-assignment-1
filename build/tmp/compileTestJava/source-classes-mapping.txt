@@ -2,3 +2,5 @@ CliRunnerTests.java
  CliRunnerTests
 HtmlGrabberTests.java
  HtmlGrabberTests
+WordCountTests.java
+ WordCountTests

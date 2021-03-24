@@ -31,20 +31,6 @@ public class HtmlGrabberTests {
         Assertions.assertEquals(HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT, grabber.getBrokenLinkDepth());
     }
 
-    @Test
-    void testWordCountEnglishText() {
-        final int wordsOnNginxDefaultPage = 43;
-        Assertions.assertEquals(wordsOnNginxDefaultPage, grabber.countNumberOfWords());
-    }
 
-    @Test
-    void testWordCountGermanText() {
-        final int wordsOnPage = 34;
-        try {
-            grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
 
 }

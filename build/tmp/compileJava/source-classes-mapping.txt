@@ -1,3 +1,7 @@
+WordCountProvider.java
+ WordCountProvider
+MetricProvider.java
+ MetricProvider
 CliRunner.java
  CliRunner
 CliArgParsingState.java

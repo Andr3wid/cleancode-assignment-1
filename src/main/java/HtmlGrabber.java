@@ -5,9 +5,7 @@ import java.util.List;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
-import org.jsoup.select.Selector;
 
 /**
  * Grabs HTML from a given URL, parses it and recursively grabs linked resources.
@@ -32,49 +30,9 @@ public class HtmlGrabber {
         this.brokenLinkDepth = brokenLinkDepth;
     }
 
-    /**
-     * Counts the number of words on a web page.
-     * @return the number of words counted
-     */
-    public int countNumberOfWords() {
-        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(this.grabbedHtml, "title");
-        String strippedText = this.preProcessText(htmlWithoutTitle.text());
-        String[] words = strippedText.split(" ");
 
-        return words.length;
-    }
 
-    /**
-     * Pre-processes text for word-counting by
-     * - replacing all non-alphanumeric characters with a space
-     * - replace all whitespace-chars with a single space
-     * @param text the text to be processed
-     * @return the text with removed tokens and whitespace
-     */
-    private String preProcessText(String text) {
-        text = text.replaceAll("[^a-zA-z]", " ");
-        text = text.trim();
-        text = text.replaceAll(" +", " ");
 
-        return text;
-    }
-
-    /**
-     * Removes all nodes that match the given selector and returns a copy of the document.
-     * @param doc document to be removed from
-     * @param selector css-selector to match nodes
-     * @return a stripped copy of the document
-     */
-    private Document removeHtmlElementsBySelector(Document doc, String selector) {
-        Document strippedDoc = doc.clone();
-        Elements matchedElements = strippedDoc.select(selector);
-
-        for(Element element : matchedElements) {
-            element.remove();
-        }
-
-        return strippedDoc;
-    }
 
     public int countNumberOfLinks() {
         return -1;
@@ -99,5 +57,9 @@ public class HtmlGrabber {
 
     public ArrayList<HtmlGrabber> getAdjacentPages() {
         return adjacentPages;
+    }
+
+    public Document getGrabbedHtml() {
+        return grabbedHtml;
     }
 }
