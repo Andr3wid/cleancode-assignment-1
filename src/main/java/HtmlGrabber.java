@@ -16,26 +16,19 @@ public class HtmlGrabber {
     private final Document grabbedHtml;
     private final String url;
     private int brokenLinkDepth;
-    private final ArrayList<HtmlGrabber> adjacentPages;
+    private final Elements links;
 
     public HtmlGrabber(String url) throws IOException {
-        this.adjacentPages = new ArrayList<>();
         this.url = url;
         this.grabbedHtml = Jsoup.connect(this.url).get();
         this.brokenLinkDepth = BROKEN_LINK_DEPTH_DEFAULT;
+        // TODO: check if "a" is a sufficient criterion. (could also just be an on-page anchor ...)
+        this.links = this.grabbedHtml.select("a");
     }
 
     public HtmlGrabber(String url, int brokenLinkDepth) throws IOException {
         this(url);
         this.brokenLinkDepth = brokenLinkDepth;
-    }
-
-
-
-
-
-    public int countNumberOfLinks() {
-        return -1;
     }
 
     // GETTER & SETTER section
@@ -55,8 +48,8 @@ public class HtmlGrabber {
         this.brokenLinkDepth = brokenLinkDepth;
     }
 
-    public ArrayList<HtmlGrabber> getAdjacentPages() {
-        return adjacentPages;
+    public Elements getLinks() {
+        return this.links;
     }
 
     public Document getGrabbedHtml() {
