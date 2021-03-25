@@ -1,12 +1,12 @@
+ImageCountTests.java
+ ImageCountTests
 WordCountTests.java
  WordCountTests
+VideoCountTests.java
+ VideoCountTests
 HtmlGrabberTests.java
  HtmlGrabberTests
 LinkCountTests.java
  LinkCountTests
 CliRunnerTests.java
  CliRunnerTests
-ImageCountTests.java
- ImageCountTests
-VideoCountTests.java
- VideoCountTests

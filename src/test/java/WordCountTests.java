@@ -1,3 +1,5 @@
+import assignment1.HtmlGrabber;
+import assignment1.metrics.WordCountProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

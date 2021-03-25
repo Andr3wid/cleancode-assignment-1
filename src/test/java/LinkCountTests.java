@@ -1,8 +1,8 @@
+import assignment1.HtmlGrabber;
+import assignment1.metrics.LinkCountProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.IOException;
 
 public class LinkCountTests {
 

@@ -1,2 +1,2 @@
-# cleancode-assignment-1
+# assignment1-assignment-1
 CleanCode assignment 1: WebCrawler

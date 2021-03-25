@@ -1,6 +1,6 @@
-import org.jsoup.nodes.Element;
+package assignment1.metrics;
 
-import java.io.IOException;
+import assignment1.HtmlGrabber;
 
 public abstract class MetricProvider {
 
@@ -18,7 +18,7 @@ public abstract class MetricProvider {
     /**
      * Recursively calculates a certain metric for a grabbed page.
      * The calculation-strategy is defined in the "calc" method that gets implemented
-     * by each explicit class that extends MetricProvider.
+     * by each explicit class that extends assignment1.metrics.MetricProvider.
      * @return The total metric with respect to the recursion counter.
      */
     public int getMetric() {

@@ -1,5 +1,7 @@
+package assignment1;
+
 /**
-* Main class handles command line argument parsing and initial call to the HtmlGrabber.
+* Main class handles command line argument parsing and initial call to the assignment1.HtmlGrabber.
  */
 
 public class CliRunner {
@@ -33,7 +35,7 @@ public class CliRunner {
     }
 
     /**
-     * Instantiate the top-level HtmlGrabber by trying to parse CLI arguments.
+     * Instantiate the top-level assignment1.HtmlGrabber by trying to parse CLI arguments.
      * @param args The argument-array.
      */
     private static HtmlGrabber getGrabberByCliArguments(String[] args) {
