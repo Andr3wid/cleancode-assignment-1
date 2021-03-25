@@ -35,6 +35,7 @@ public class WordCountProvider extends MetricProvider {
      * @return the text with removed tokens and whitespace
      */
     private String preProcessText(String text) {
+        // TODO: find regex that works for all non-english letter (e.g. scandinavian or balkan-languages, japanese ...)
         text = text.replaceAll("[^a-zA-zöüäÖÜÄß]", " ");
         text = text.trim();
         text = text.replaceAll(" +", " ");
