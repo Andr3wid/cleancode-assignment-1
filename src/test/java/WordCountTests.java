@@ -24,14 +24,33 @@ public class WordCountTests {
     }
 
     @Test
-    void testWordCountEnglishText() {
+    void wordCountEnglishTextDepthZero() {
+        grabber.setBrokenLinkDepth(0);
         final int wordsOnNginxDefaultPage = 43;
         Assertions.assertEquals(wordsOnNginxDefaultPage, wcp.getMetric());
     }
 
     @Test
-    void testWordCountGermanText() {
-        // TODO: wordcount-method obviously treats german 'äöü' not as alphanumeric chars; fix that
+    void wordCountEnglishTextDepthZero2() throws IOException {
+        grabber = new HtmlGrabber("http://nginx.org/");
+        grabber.setBrokenLinkDepth(0);
+        wcp = new WordCountProvider(grabber);
+        final int wordsOnNginxHomePage = 138;
+        Assertions.assertEquals(wordsOnNginxHomePage, wcp.getMetric());
+    }
+
+    @Test
+    void wordCountEnglishTextDepthZero3() throws IOException {
+        grabber = new HtmlGrabber("http://nginx.com/");
+        grabber.setBrokenLinkDepth(0);
+        wcp = new WordCountProvider(grabber);
+        final int wordsOnNginxHomePage = 981;
+        Assertions.assertEquals(wordsOnNginxHomePage, wcp.getMetric());
+    }
+
+    @Test
+    void wordCountGermanTextDepthZero() {
+        grabber.setBrokenLinkDepth(0);
         final int wordsOnPage = 34;
         try {
             grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
@@ -41,4 +60,12 @@ public class WordCountTests {
             ioe.printStackTrace();
         }
     }
+
+    @Test
+    void wordCountRecursive1() {
+        grabber.setBrokenLinkDepth(1);
+        int expectedWordCount = 138 + 981 + 43;
+        Assertions.assertEquals(expectedWordCount, wcp.getMetric());
+    }
+
 }

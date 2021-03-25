@@ -2,6 +2,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
+import java.util.ArrayList;
+
 public class WordCountProvider extends MetricProvider {
 
     public WordCountProvider(HtmlGrabber grabber) {
@@ -10,8 +13,11 @@ public class WordCountProvider extends MetricProvider {
 
     @Override
     public int getMetric() {
-        // TODO: Implement recursion step here
-        return this.calc();
+        if(baseGrabber.getBrokenLinkDepth() == 0) {
+            return this.calc();
+        } else {
+            return this.calc() + this.recursiveCalc();
+        }
     }
 
     /**
@@ -25,6 +31,28 @@ public class WordCountProvider extends MetricProvider {
         String[] words = strippedText.split(" ");
 
         return words.length;
+    }
+
+    /**
+     * Starts & collects the metric values for subsequent pages and returns the value.
+     * @return Total sum of words for all subsequent pages.
+     */
+    public int recursiveCalc() {
+        int wordsTotal = 0;
+
+        WordCountProvider referencePageProvider;
+        HtmlGrabber referencePageGrabber;
+
+        for(Element page : baseGrabber.getLinks()) {
+            try {
+                referencePageGrabber = new HtmlGrabber(page.attr("href"), baseGrabber.getBrokenLinkDepth()-1);
+                referencePageProvider = new WordCountProvider(referencePageGrabber);
+                wordsTotal += referencePageProvider.getMetric();
+            } catch(IOException ioe) {
+                System.err.println("Error while getting word-count for " + page.attr("href") + " in recursive step.");
+            }
+        }
+        return wordsTotal;
     }
 
     /**
@@ -42,6 +70,7 @@ public class WordCountProvider extends MetricProvider {
 
         return text;
     }
+
     /**
      * Removes all nodes that match the given selector and returns a copy of the document.
      * @param doc document to be removed from

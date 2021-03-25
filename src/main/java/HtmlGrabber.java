@@ -49,6 +49,10 @@ public class HtmlGrabber {
         return this.links;
     }
 
+    public int getLinkCount() {
+        return this.links.toArray().length;
+    }
+
     public Document getGrabbedHtml() {
         return grabbedHtml;
     }

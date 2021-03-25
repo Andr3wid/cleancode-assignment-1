@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="WordCountTests" tests="2" skipped="0" failures="0" errors="0" timestamp="2021-03-25T18:00:33" hostname="ricebowl" time="0.336">
+<testsuite name="WordCountTests" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-03-25T18:41:32" hostname="ricebowl" time="2.223">
   <properties/>
-  <testcase name="testWordCountEnglishText()" classname="WordCountTests" time="0.234"/>
-  <testcase name="testWordCountGermanText()" classname="WordCountTests" time="0.101"/>
+  <testcase name="wordCountRecursive1()" classname="WordCountTests" time="2.223"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
