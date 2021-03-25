@@ -12,3 +12,5 @@ HtmlGrabber.java
  HtmlGrabber
 ReportGenerator.java
  ReportGenerator
+ImageCountProvider.java
+ ImageCountProvider

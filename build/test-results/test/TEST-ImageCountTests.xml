@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="ImageCountTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-03-25T20:43:12" hostname="ricebowl" time="7.539">
+  <properties/>
+  <testcase name="imageCountRecursion1()" classname="ImageCountTests" time="7.08"/>
+  <testcase name="imageCountNoRecursion()" classname="ImageCountTests" time="0.409"/>
+  <testcase name="imageCountNoRecursionNoImages()" classname="ImageCountTests" time="0.048"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

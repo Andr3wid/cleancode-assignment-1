@@ -6,3 +6,5 @@ LinkCountTests.java
  LinkCountTests
 CliRunnerTests.java
  CliRunnerTests
+ImageCountTests.java
+ ImageCountTests
