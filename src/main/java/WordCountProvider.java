@@ -5,7 +5,7 @@ import org.jsoup.select.Elements;
 public class WordCountProvider extends MetricProvider {
 
     public WordCountProvider(HtmlGrabber grabber) {
-        super(grabber);
+        super(grabber, "WordCount");
     }
 
     @Override
@@ -35,7 +35,7 @@ public class WordCountProvider extends MetricProvider {
      * @return the text with removed tokens and whitespace
      */
     private String preProcessText(String text) {
-        text = text.replaceAll("[^a-zA-z]", " ");
+        text = text.replaceAll("[^a-zA-zöüäÖÜÄß]", " ");
         text = text.trim();
         text = text.replaceAll(" +", " ");
 

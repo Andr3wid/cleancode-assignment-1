@@ -1,9 +1,11 @@
 public abstract class MetricProvider {
 
     final HtmlGrabber baseGrabber;
+    final String metricName;
 
-    public MetricProvider(HtmlGrabber baseGrabber) {
+    public MetricProvider(HtmlGrabber baseGrabber, String metricName) {
         this.baseGrabber = baseGrabber;
+        this.metricName = metricName;
     }
 
     public abstract int getMetric();

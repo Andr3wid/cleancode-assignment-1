@@ -1,5 +1,5 @@
-WordCountProvider.java
- WordCountProvider
+ReportGenerator.java
+ ReportGenerator
 MetricProvider.java
  MetricProvider
 CliRunner.java
@@ -8,5 +8,5 @@ CliArgParsingState.java
  CliArgParsingState
 HtmlGrabber.java
  HtmlGrabber
-ReportGenerator.java
- ReportGenerator
+WordCountProvider.java
+ WordCountProvider
