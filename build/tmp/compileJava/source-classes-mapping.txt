@@ -1,9 +1,11 @@
-WordCountProvider.java
- WordCountProvider
 MetricProvider.java
  MetricProvider
+WordCountProvider.java
+ WordCountProvider
 CliRunner.java
  CliRunner
+LinkCountProvider.java
+ LinkCountProvider
 CliArgParsingState.java
  CliArgParsingState
 HtmlGrabber.java

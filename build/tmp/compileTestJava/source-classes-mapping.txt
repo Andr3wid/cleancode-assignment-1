@@ -1,6 +1,8 @@
-CliRunnerTests.java
- CliRunnerTests
-HtmlGrabberTests.java
- HtmlGrabberTests
 WordCountTests.java
  WordCountTests
+HtmlGrabberTests.java
+ HtmlGrabberTests
+LinkCountTests.java
+ LinkCountTests
+CliRunnerTests.java
+ CliRunnerTests

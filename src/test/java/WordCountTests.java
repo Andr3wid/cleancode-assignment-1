@@ -15,12 +15,12 @@ public class WordCountTests {
 
     @BeforeEach
     void setupValidGrabber() {
-        try {
-            grabber = new HtmlGrabber(TEST_URL_ENGLISH_SIMPLE);
-            wcp = new WordCountProvider(grabber);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        this.instantiateGrabberByUrl(TEST_URL_ENGLISH_SIMPLE);
+    }
+
+    private void instantiateGrabberByUrl(String url) {
+        grabber = new HtmlGrabber(url);
+        wcp = new WordCountProvider(grabber);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class WordCountTests {
         grabber = new HtmlGrabber("http://nginx.org/");
         grabber.setBrokenLinkDepth(0);
         wcp = new WordCountProvider(grabber);
-        final int wordsOnNginxHomePage = 138;
+        final int wordsOnNginxHomePage = 145;
         Assertions.assertEquals(wordsOnNginxHomePage, wcp.getMetric());
     }
 
@@ -52,19 +52,15 @@ public class WordCountTests {
     void wordCountGermanTextDepthZero() {
         grabber.setBrokenLinkDepth(0);
         final int wordsOnPage = 34;
-        try {
-            grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
-            wcp = new WordCountProvider(grabber);
-            Assertions.assertEquals(wordsOnPage, wcp.getMetric());
-        } catch(IOException ioe) {
-            ioe.printStackTrace();
-        }
+        grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
+        wcp = new WordCountProvider(grabber);
+        Assertions.assertEquals(wordsOnPage, wcp.getMetric());
     }
 
     @Test
     void wordCountRecursive1() {
         grabber.setBrokenLinkDepth(1);
-        int expectedWordCount = 138 + 981 + 43;
+        int expectedWordCount = 145 + 981 + 43;
         Assertions.assertEquals(expectedWordCount, wcp.getMetric());
     }
 

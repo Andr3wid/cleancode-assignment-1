@@ -11,15 +11,6 @@ public class WordCountProvider extends MetricProvider {
         super(grabber, "WordCount");
     }
 
-    @Override
-    public int getMetric() {
-        if(baseGrabber.getBrokenLinkDepth() == 0) {
-            return this.calc();
-        } else {
-            return this.calc() + this.recursiveCalc();
-        }
-    }
-
     /**
      * Counts the number of words on a web page.
      * @return the number of words counted
@@ -35,24 +26,25 @@ public class WordCountProvider extends MetricProvider {
 
     /**
      * Starts & collects the metric values for subsequent pages and returns the value.
+     * TODO: Generalize this method as only the type of the "referencePageProvider" changes between different metric classes.
      * @return Total sum of words for all subsequent pages.
      */
+    @Override
     public int recursiveCalc() {
-        int wordsTotal = 0;
+        int metricValueTotal = 0;
 
         WordCountProvider referencePageProvider;
         HtmlGrabber referencePageGrabber;
 
         for(Element page : baseGrabber.getLinks()) {
-            try {
-                referencePageGrabber = new HtmlGrabber(page.attr("href"), baseGrabber.getBrokenLinkDepth()-1);
+            referencePageGrabber = new HtmlGrabber(page.attr("href"), baseGrabber.getBrokenLinkDepth()-1);
+
+            if(!referencePageGrabber.isBroken()) {
                 referencePageProvider = new WordCountProvider(referencePageGrabber);
-                wordsTotal += referencePageProvider.getMetric();
-            } catch(IOException ioe) {
-                System.err.println("Error while getting word-count for " + page.attr("href") + " in recursive step.");
+                metricValueTotal += referencePageProvider.getMetric();
             }
         }
-        return wordsTotal;
+        return metricValueTotal;
     }
 
     /**

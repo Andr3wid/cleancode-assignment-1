@@ -15,18 +15,14 @@ public class HtmlGrabberTests {
 
     @BeforeEach
     void setupValidGrabber() {
-        try {
-            grabber = new HtmlGrabber(TEST_URL_ENGLISH_SIMPLE);
-        } catch(IOException e) {
-            e.printStackTrace();
-        }
+        grabber = new HtmlGrabber(TEST_URL_ENGLISH_SIMPLE);
     }
 
     @Test
     void invalidUrl() {
-        Assertions.assertThrows(IOException.class, () -> {
-            HtmlGrabber hg = new HtmlGrabber("https://idonotexist.foobar");
-        });
+        grabber = new HtmlGrabber("idonotexist.bla");
+        Assertions.assertNull(grabber.getGrabbedHtml());
+        Assertions.assertTrue(grabber.isBroken());
     }
 
     @Test
@@ -36,7 +32,7 @@ public class HtmlGrabberTests {
 
     @Test
     void testLinkCount() {
-        Assertions.assertEquals(2, grabber.getLinks().toArray().length);
+        Assertions.assertEquals(2, grabber.getLinkCount());
     }
 
     @Test
