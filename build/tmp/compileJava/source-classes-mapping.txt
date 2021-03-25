@@ -14,3 +14,5 @@ ReportGenerator.java
  ReportGenerator
 ImageCountProvider.java
  ImageCountProvider
+VideoCountProvider.java
+ VideoCountProvider

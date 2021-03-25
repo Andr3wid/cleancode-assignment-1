@@ -8,3 +8,5 @@ CliRunnerTests.java
  CliRunnerTests
 ImageCountTests.java
  ImageCountTests
+VideoCountTests.java
+ VideoCountTests
