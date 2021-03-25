@@ -1,8 +1,11 @@
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class HtmlGrabberTests {
 
@@ -34,6 +37,24 @@ public class HtmlGrabberTests {
     @Test
     void testLinkCount() {
         Assertions.assertEquals(2, grabber.getLinks().toArray().length);
+    }
+
+    @Test
+    void testLinkContent() {
+        Elements links = grabber.getLinks();
+        links.attr("href");
+
+        ArrayList<String> hrefValuesExpected = new ArrayList<>();
+        hrefValuesExpected.add("http://nginx.org/");
+        hrefValuesExpected.add("http://nginx.com/");
+
+        ArrayList<String> hrefValuesActual = new ArrayList<>();
+
+        for (Element l : links) {
+            hrefValuesActual.add(l.attr("href"));
+        }
+
+        Assertions.assertEquals(hrefValuesExpected, hrefValuesActual);
     }
 
 }
