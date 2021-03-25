@@ -6,7 +6,7 @@ CliRunner.java
  CliRunner
 CliArgParsingState.java
  CliArgParsingState
-HtmlAnalyzer.java
- HtmlAnalyzer
 HtmlGrabber.java
  HtmlGrabber
+ReportGenerator.java
+ ReportGenerator

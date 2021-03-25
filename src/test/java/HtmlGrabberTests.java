@@ -31,6 +31,9 @@ public class HtmlGrabberTests {
         Assertions.assertEquals(HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT, grabber.getBrokenLinkDepth());
     }
 
-
+    @Test
+    void testLinkCount() {
+        Assertions.assertEquals(2, grabber.getLinks().toArray().length);
+    }
 
 }

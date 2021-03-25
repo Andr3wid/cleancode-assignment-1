@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="HtmlGrabberTests" tests="3" skipped="0" failures="0" errors="0" timestamp="2021-03-25T14:24:58" hostname="ricebowl" time="0.544">
+  <properties/>
+  <testcase name="invalidUrl()" classname="HtmlGrabberTests" time="0.446"/>
+  <testcase name="testDefaultRecursionLevel()" classname="HtmlGrabberTests" time="0.049"/>
+  <testcase name="testLinkCount()" classname="HtmlGrabberTests" time="0.046"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
