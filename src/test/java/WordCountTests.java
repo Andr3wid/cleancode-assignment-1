@@ -1,4 +1,5 @@
 import assignment1.HtmlGrabber;
+import assignment1.metrics.MetricProvider;
 import assignment1.metrics.WordCountProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,7 +12,7 @@ public class WordCountTests {
     // TODO: refactor tests to be beautiful; test shallow (depth = 0) and recursive steps
 
     HtmlGrabber grabber;
-    WordCountProvider wcp;
+    MetricProvider wordCountMetric;
     final String TEST_URL_ENGLISH_SIMPLE = "http://andref.xyz/";
     final String TEST_URL_GERMAN_SIMPLE = "http://andref.xyz/german.html";
 
@@ -22,48 +23,45 @@ public class WordCountTests {
 
     private void instantiateGrabberByUrl(String url) {
         grabber = new HtmlGrabber(url);
-        wcp = new WordCountProvider(grabber);
+        wordCountMetric = new MetricProvider(grabber, new WordCountProvider());
     }
 
     @Test
     void wordCountEnglishTextDepthZero() {
         grabber.setBrokenLinkDepth(0);
         final int wordsOnNginxDefaultPage = 43;
-        Assertions.assertEquals(wordsOnNginxDefaultPage, wcp.getMetric());
+        Assertions.assertEquals(wordsOnNginxDefaultPage, wordCountMetric.getMetric());
     }
 
     @Test
     void wordCountEnglishTextDepthZero2() throws IOException {
-        grabber = new HtmlGrabber("http://nginx.org/");
+        instantiateGrabberByUrl("http://nginx.org/");
         grabber.setBrokenLinkDepth(0);
-        wcp = new WordCountProvider(grabber);
         final int wordsOnNginxHomePage = 145;
-        Assertions.assertEquals(wordsOnNginxHomePage, wcp.getMetric());
+        Assertions.assertEquals(wordsOnNginxHomePage, wordCountMetric.getMetric());
     }
 
     @Test
     void wordCountEnglishTextDepthZero3() throws IOException {
-        grabber = new HtmlGrabber("http://nginx.com/");
+        instantiateGrabberByUrl("http://nginx.com/");
         grabber.setBrokenLinkDepth(0);
-        wcp = new WordCountProvider(grabber);
         final int wordsOnNginxHomePage = 981;
-        Assertions.assertEquals(wordsOnNginxHomePage, wcp.getMetric());
+        Assertions.assertEquals(wordsOnNginxHomePage, wordCountMetric.getMetric());
     }
 
     @Test
     void wordCountGermanTextDepthZero() {
+        instantiateGrabberByUrl(TEST_URL_GERMAN_SIMPLE);
         grabber.setBrokenLinkDepth(0);
         final int wordsOnPage = 34;
-        grabber = new HtmlGrabber(TEST_URL_GERMAN_SIMPLE);
-        wcp = new WordCountProvider(grabber);
-        Assertions.assertEquals(wordsOnPage, wcp.getMetric());
+        Assertions.assertEquals(wordsOnPage, wordCountMetric.getMetric());
     }
 
     @Test
     void wordCountRecursive1() {
         grabber.setBrokenLinkDepth(1);
         int expectedWordCount = 145 + 981 + 43;
-        Assertions.assertEquals(expectedWordCount, wcp.getMetric());
+        Assertions.assertEquals(expectedWordCount, wordCountMetric.getMetric());
     }
 
 }

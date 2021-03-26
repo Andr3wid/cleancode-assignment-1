@@ -1,5 +1,6 @@
 import assignment1.HtmlGrabber;
 import assignment1.metrics.LinkCountProvider;
+import assignment1.metrics.MetricProvider;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -9,7 +10,7 @@ public class LinkCountTests {
     // TODO: refactor tests to be beautiful
 
     HtmlGrabber grabber;
-    LinkCountProvider lcp;
+    MetricProvider linkCountMetric;
     final String URL_NGINX_DEFAULT_PAGE = "http://andref.xyz/";
     final String URL_LINKLIST = "http://andref.xyz/linklist_simple.html";
     final String URL_GOOGLE = "http://google.at";
@@ -21,14 +22,14 @@ public class LinkCountTests {
 
     private void instantiateObjectsByUrl(String url) {
         grabber = new HtmlGrabber(url);
-        lcp = new LinkCountProvider(grabber);
+        linkCountMetric = new MetricProvider(grabber, new LinkCountProvider());
     }
 
     @Test
     void linkCountNoRecursion1() {
         grabber.setBrokenLinkDepth(0);
         final int expectedLinks = 2;
-        Assertions.assertEquals(expectedLinks, lcp.getMetric());
+        Assertions.assertEquals(expectedLinks, linkCountMetric.getMetric());
     }
 
     @Test
@@ -36,7 +37,7 @@ public class LinkCountTests {
         instantiateObjectsByUrl(URL_GOOGLE);
         grabber.setBrokenLinkDepth(0);
         final int expectedLinks = 17;
-        Assertions.assertEquals(expectedLinks, lcp.getMetric());
+        Assertions.assertEquals(expectedLinks, linkCountMetric.getMetric());
     }
 
 
@@ -45,14 +46,14 @@ public class LinkCountTests {
         instantiateObjectsByUrl(URL_LINKLIST);
         grabber.setBrokenLinkDepth(1);
         final int expectedLinks = 21;
-        Assertions.assertEquals(expectedLinks, lcp.getMetric());
+        Assertions.assertEquals(expectedLinks, linkCountMetric.getMetric());
     }
 
     @Test
     void linkCountRecursion2() {
         instantiateObjectsByUrl(URL_LINKLIST);
-        final int expectedLinks = 1118;
-        Assertions.assertEquals(expectedLinks, lcp.getMetric());
+        final int expectedLinks = 1119;
+        Assertions.assertEquals(expectedLinks, linkCountMetric.getMetric());
     }
 
     @Test

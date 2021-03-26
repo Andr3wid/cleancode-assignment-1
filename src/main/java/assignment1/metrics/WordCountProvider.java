@@ -5,47 +5,31 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import assignment1.HtmlGrabber;
 
-public class WordCountProvider extends MetricProvider {
-
-    public WordCountProvider(HtmlGrabber grabber) {
-        super(grabber, "WordCount");
-    }
+public class WordCountProvider implements MetricCalcStrategy {
 
     /**
      * Counts the number of words on a web page.
      * @return the number of words counted
      */
     @Override
-    public int calc() {
-        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(super.getBaseGrabber().getGrabbedHtml(), "title");
+    public int calc(HtmlGrabber grabber) {
+        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(grabber.getGrabbedHtml(), "title");
         String strippedText = this.preProcessText(htmlWithoutTitle.text());
         String[] words = strippedText.split(" ");
 
         return words.length;
     }
 
-    /**
-     * Starts & collects the metric values for subsequent pages and returns the value.
-     * TODO: Generalize this method as only the type of the "referencePageProvider" changes between different metric classes.
-     * @return Total sum of words for all subsequent pages.
-     */
     @Override
-    public int recursiveCalc() {
-        int metricValueTotal = 0;
-
-        WordCountProvider referencePageProvider;
-        HtmlGrabber referencePageGrabber;
-
-        for(Element page : baseGrabber.getLinks()) {
-            referencePageGrabber = new HtmlGrabber(page.attr("href"), baseGrabber.getBrokenLinkDepth()-1);
-
-            if(!referencePageGrabber.isBroken()) {
-                referencePageProvider = new WordCountProvider(referencePageGrabber);
-                metricValueTotal += referencePageProvider.getMetric();
-            }
-        }
-        return metricValueTotal;
+    public String getMetricLabel() {
+        return "Number of words: ";
     }
+
+    @Override
+    public MetricCalcStrategy buildConcreteProvider() {
+        return new WordCountProvider();
+    }
+
 
     /**
      * Pre-processes text for word-counting by

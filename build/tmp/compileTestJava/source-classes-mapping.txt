@@ -6,7 +6,7 @@ VideoCountTests.java
  VideoCountTests
 HtmlGrabberTests.java
  HtmlGrabberTests
-LinkCountTests.java
- LinkCountTests
 CliRunnerTests.java
  CliRunnerTests
+LinkCountTests.java
+ LinkCountTests
