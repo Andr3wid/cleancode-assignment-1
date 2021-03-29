@@ -23,6 +23,7 @@ public class MetricProvider {
         if(baseGrabber.getBrokenLinkDepth() == 0) {
             return this.metricCalculationStrategy.calc(this.baseGrabber);
         } else {
+            // TODO: Don't use cumulative calculation but treat each linked page separately.
             return this.metricCalculationStrategy.calc(this.baseGrabber) + this.recursiveCalc();
         }
     }
