@@ -1,8 +1,5 @@
 package assignment1;
 
-import assignment1.metrics.MetricProvider;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -33,7 +30,7 @@ public class ReportGenerator {
         builder.append("--- Crawler metrics for ").append(this.grabber.getUrl()).append("---\n");
 
         Set<String> keys = this.reportValues.keySet();
-        for(String key : keys) {
+        for (String key : keys) {
             builder.append(key).append(": ").append(this.reportValues.get(key)).append("\n");
         }
 

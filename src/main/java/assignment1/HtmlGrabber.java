@@ -1,7 +1,5 @@
 package assignment1;
 
-import java.io.IOException;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -35,7 +33,7 @@ public class HtmlGrabber {
             // TODO: check if "a" is a sufficient criterion. (could also just be an on-page anchor ...)
             this.links = this.grabbedHtml.select("a");
             this.isBroken = false;
-        } catch(Exception e) {
+        } catch (Exception e) {
             this.grabbedHtml = null;
             this.links = null;
             this.isBroken = true;
@@ -64,7 +62,7 @@ public class HtmlGrabber {
     }
 
     public int getLinkCount() {
-        if(this.links != null) {
+        if (this.links != null) {
             return this.links.toArray().length;
         } else {
             return 0;

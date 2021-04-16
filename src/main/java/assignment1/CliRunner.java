@@ -1,7 +1,7 @@
 package assignment1;
 
 /**
-* Main class handles command line argument parsing and initial call to the assignment1.HtmlGrabber.
+ * Main class handles command line argument parsing and initial call to the assignment1.HtmlGrabber.
  */
 
 public class CliRunner {
@@ -21,8 +21,9 @@ public class CliRunner {
 
     /**
      * Print specified message along with usage information and exit the program.
+     *
      * @param message The message to be displayed.
-     * @param state The state that should be set.
+     * @param state   The state that should be set.
      */
     private static void handleUnexpectedParameters(String message, CliArgParsingState state) {
         CliRunner.state = state;
@@ -36,6 +37,7 @@ public class CliRunner {
 
     /**
      * Instantiate the top-level assignment1.HtmlGrabber by trying to parse CLI arguments.
+     *
      * @param args The argument-array.
      */
     private static HtmlGrabber getGrabberByCliArguments(String[] args) {
@@ -48,7 +50,7 @@ public class CliRunner {
             brokenLinkDepth = args.length == 2 ? Integer.parseInt(args[1]) : HtmlGrabber.BROKEN_LINK_DEPTH_DEFAULT;
             instantiatedGrabber = new HtmlGrabber(url, brokenLinkDepth);
             CliRunner.state = CliArgParsingState.ARG_PARSING_SUCCESS;
-        } catch(Exception e) {
+        } catch (Exception e) {
             instantiatedGrabber = null;
             handleUnexpectedParameters("Second argument must be a number!", CliArgParsingState.ARG_PARSING_ERROR);
         }
