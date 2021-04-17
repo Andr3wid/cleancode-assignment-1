@@ -15,6 +15,8 @@ import java.util.List;
 
 public class WebpageAnalyzer {
 
+    public static final int DEFAULT_RECURSION_DEPTH = 2;
+
     /**
      * URL to be analyzed
      */
@@ -30,6 +32,8 @@ public class WebpageAnalyzer {
      */
     private final List<WebpageMetric> webpageMetrics;
 
+    private static WebpageAnalyzer rootPage;
+
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
         this.maxLinkDepth = linkDepth;
         webpageMetrics = new ArrayList<>();
@@ -43,12 +47,18 @@ public class WebpageAnalyzer {
     }
 
     public static void main(String[] args) throws MalformedURLException {
-//        WebpageAnalyzer wpa = new WebpageAnalyzer("http://duck.com/");
-        WebpageAnalyzer wpa = new WebpageAnalyzer("https://google.com/");
-//        WebpageAnalyzer wpa = new WebpageAnalyzer("http://andref.xyz/");
+        // parse CLI arguments
         try {
-            wpa.analyze();
-            System.out.println("finshed");
+            rootPage = parseCliArguments(args);
+        } catch(Exception e) {
+            printUsageTextOnError(e.getMessage());
+        }
+
+
+        try {
+            if(rootPage != null) {
+                rootPage.analyze();
+            }
         } catch (IOException e) {
             System.out.println("Provided url is not reachable : " + e.getMessage());
         }
@@ -99,6 +109,46 @@ public class WebpageAnalyzer {
             }
         }
         webpageMetrics.add(webpageMetric);
+    }
+
+    /**
+     * Checks if CLI arguments are well formed and given in the expected order.
+     * @param args The parameter array to check
+     * @return constructed WebpageAnalyzer
+     * @throws IllegalArgumentException thrown if malformed CLI arguments are found
+     */
+    private static WebpageAnalyzer parseCliArguments(String[] args) throws IllegalArgumentException, MalformedURLException {
+        String url;
+        int recursionDepth;
+
+        if (args.length < 1 || args.length > 2) {
+            throw new IllegalArgumentException("Illegal argument count!");
+        }
+
+        url = args[0];
+
+        if(args.length == 1) {
+            return new WebpageAnalyzer(url);
+        } else {
+            try {
+                recursionDepth = Integer.parseInt(args[1]);
+                return new WebpageAnalyzer(url, recursionDepth);
+            } catch(NumberFormatException nfe) {
+                throw new IllegalArgumentException("Recursion depth must be a number!");
+            }
+        }
+    }
+
+    private static void printUsageTextOnError(String message) {
+        System.out.println("Error while parsing CLI arguments: " + message);
+        printUsageInfo();
+    }
+
+    private static void printUsageInfo() {
+        System.out.println("Usage: java -jar crawler.jar <URL> <RECURSION_DEPTH (optional; default=2)>");
+        System.out.println("Examples:");
+        System.out.println("\t * java -jar crawler.jar https://www.google.at");
+        System.out.println("\t * java -jar crawler.jar https://www.google.at 3");
     }
 
     public List<WebpageMetric> getWebpageMetrics() {
