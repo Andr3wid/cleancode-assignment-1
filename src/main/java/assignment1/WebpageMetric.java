@@ -15,8 +15,11 @@ public class WebpageMetric {
     private int imageCount;
     private int videoCount;
     private int wordCount;
+    private final String url;
 
-    public WebpageMetric(Document document) {
+
+    public WebpageMetric(Document document, String url) {
+        this.url = url;
         brokenLinks = new ArrayList<>();
         imageCount = 0;
         getMetrics(document);
@@ -37,7 +40,7 @@ public class WebpageMetric {
     private void getMetrics(Document document) {
         imageCount = document.body().select("img").size();
         videoCount = document.body().select("video").size();
-        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(document, "title");
+        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(document);
         String strippedText = this.preProcessText(htmlWithoutTitle.text());
         wordCount = strippedText.split(" ").length;
     }
@@ -46,10 +49,9 @@ public class WebpageMetric {
      * Removes all nodes that match the given selector and returns a copy of the document.
      *
      * @param doc      document to be removed from
-     * @param selector
      * @return a stripped copy of the document
      */
-    private Document removeHtmlElementsBySelector(Document doc, String selector) {
+    private Document removeHtmlElementsBySelector(Document doc) {
         Document strippedDoc = doc.clone();
         Elements matchedElements = strippedDoc.select("title");
 
@@ -93,5 +95,17 @@ public class WebpageMetric {
 
     public int getWordCount() {
         return wordCount;
+    }
+
+    @Override
+    public String toString() {
+        return "WebpageMetric{" +
+                "brokenLinks=" + brokenLinks +
+                ", linkCount=" + linkCount +
+                ", imageCount=" + imageCount +
+                ", videoCount=" + videoCount +
+                ", wordCount=" + wordCount +
+                ", url='" + url + '\'' +
+                '}';
     }
 }

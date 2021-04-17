@@ -1,5 +1,6 @@
 package assignment1;
 
+import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,24 +15,30 @@ import java.util.List;
 
 public class WebpageAnalyzer {
 
-    private final String pageUrl;
+    /**
+     * URL to be analyzed
+     */
     private final URL url;
+
+    /**
+     * Specifies the level of recursion to follow links on the {@link this.url}
+     */
     private final int maxLinkDepth;
 
-
+    /**
+     * List for the Metrics of all analyzed webpages
+     */
     private final List<WebpageMetric> webpageMetrics;
 
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
         this.maxLinkDepth = linkDepth;
         webpageMetrics = new ArrayList<>();
-        pageUrl = url;
         this.url = new URL(url);
     }
 
     public WebpageAnalyzer(String url) throws MalformedURLException {
         this.maxLinkDepth = 2;
         webpageMetrics = new ArrayList<>();
-        pageUrl = url;
         this.url = new URL(url);
     }
 
@@ -47,15 +54,19 @@ public class WebpageAnalyzer {
         }
     }
 
+    /**
+     * Starts the recursive analyze process of the webpage
+     *
+     * @throws IOException see {@link Connection#get()}
+     */
     public void analyze() throws IOException {
-        Document document = Jsoup.connect(pageUrl).get();
-        analyze(document, maxLinkDepth);
+        Document document = Jsoup.connect(url.toString()).get();
+        analyze(document, maxLinkDepth, url.toString());
     }
 
-    public void analyze(Document document, int linkDepth) {
+    private void analyze(Document document, int linkDepth, String documentUrl) {
 
-        WebpageMetric webpageMetric = new WebpageMetric(document);
-
+        WebpageMetric webpageMetric = new WebpageMetric(document, documentUrl);
 
         Elements links = document.select("a");
         webpageMetric.setLinkCount(links.size());
@@ -73,7 +84,7 @@ public class WebpageAnalyzer {
 //                    if (!pageUrl.startsWith(linkUrl)) {
                     try {
                         Document linkDocument = Jsoup.connect(urlsn.toString()).get();
-                        analyze(linkDocument, linkDepth - 1);
+                        analyze(linkDocument, linkDepth - 1, urlsn.toString());
                     } catch (HttpStatusException e) {
                         if (e.getStatusCode() == 404) {
                             webpageMetric.addBrokenLink(urlsn.toString());
