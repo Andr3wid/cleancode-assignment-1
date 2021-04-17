@@ -48,7 +48,7 @@ public class WebpageMetric {
     /**
      * Removes all nodes that match the given selector and returns a copy of the document.
      *
-     * @param doc      document to be removed from
+     * @param doc document to be removed from
      * @return a stripped copy of the document
      */
     private Document removeHtmlElementsBySelector(Document doc) {
