@@ -58,7 +58,7 @@ public class WebpageAnalyzer {
         this.url = new URL(url);
     }
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
         // parse CLI arguments
         try {
             rootPage = parseCliArguments(args);
