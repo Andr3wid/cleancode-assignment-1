@@ -15,6 +15,9 @@ import java.util.List;
 
 public class WebpageAnalyzer {
 
+    /**
+     * Default recursion depth if not stated otherwise (via CLI args)
+     */
     public static final int DEFAULT_RECURSION_DEPTH = 2;
 
     /**
@@ -32,7 +35,16 @@ public class WebpageAnalyzer {
      */
     private final List<WebpageMetric> webpageMetrics;
 
+    /**
+     * Root page analyzer provided by the URL entered as CLI argument
+     */
     private static WebpageAnalyzer rootPage;
+
+    /**
+     * Represents the current state of CLI parsing; mainly used for testability
+     */
+    private static CliParsingState cliState = CliParsingState.NOT_INITIALIZED;
+
 
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
         this.maxLinkDepth = linkDepth;
@@ -50,10 +62,10 @@ public class WebpageAnalyzer {
         // parse CLI arguments
         try {
             rootPage = parseCliArguments(args);
+            cliState = CliParsingState.PARSING_SUCCESS;
         } catch(Exception e) {
             printUsageTextOnError(e.getMessage());
         }
-
 
         try {
             if(rootPage != null) {
@@ -122,6 +134,7 @@ public class WebpageAnalyzer {
         int recursionDepth;
 
         if (args.length < 1 || args.length > 2) {
+            WebpageAnalyzer.cliState = CliParsingState.ILLEGAL_ARGUMENT_COUNT;
             throw new IllegalArgumentException("Illegal argument count!");
         }
 
@@ -134,6 +147,7 @@ public class WebpageAnalyzer {
                 recursionDepth = Integer.parseInt(args[1]);
                 return new WebpageAnalyzer(url, recursionDepth);
             } catch(NumberFormatException nfe) {
+                WebpageAnalyzer.cliState = CliParsingState.ARGUMENT_PARSING_ERROR;
                 throw new IllegalArgumentException("Recursion depth must be a number!");
             }
         }
@@ -153,5 +167,21 @@ public class WebpageAnalyzer {
 
     public List<WebpageMetric> getWebpageMetrics() {
         return webpageMetrics;
+    }
+
+    public int getMaxLinkDepth() {
+        return this.maxLinkDepth;
+    }
+
+    public static CliParsingState getCliState() {
+        return cliState;
+    }
+
+    public static void setCliState(CliParsingState cliState) {
+        WebpageAnalyzer.cliState = cliState;
+    }
+
+    public static WebpageAnalyzer getRootPageAnalyzer() {
+        return rootPage;
     }
 }
