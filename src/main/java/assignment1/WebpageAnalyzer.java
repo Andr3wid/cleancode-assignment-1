@@ -63,12 +63,12 @@ public class WebpageAnalyzer {
         try {
             rootPage = parseCliArguments(args);
             cliState = CliParsingState.PARSING_SUCCESS;
-        } catch(Exception e) {
+        } catch (Exception e) {
             printUsageTextOnError(e.getMessage());
         }
 
         try {
-            if(rootPage != null) {
+            if (rootPage != null) {
                 rootPage.analyze();
             }
         } catch (IOException e) {
@@ -83,11 +83,10 @@ public class WebpageAnalyzer {
      */
     public void analyze() throws IOException {
         Document document = Jsoup.connect(url.toString()).get();
-        analyze(document, maxLinkDepth, url.toString());
+        analyze(url.toString(), document, maxLinkDepth);
     }
 
-    private void analyze(Document document, int linkDepth, String documentUrl) {
-
+    private void analyze(String documentUrl, Document document, int linkDepth) {
         WebpageMetric webpageMetric = new WebpageMetric(document, documentUrl);
 
         Elements links = document.select("a");
@@ -99,24 +98,19 @@ public class WebpageAnalyzer {
                 Element link = links.get(i);
                 try {
                     URL urlsn = new URL(link.attr("href"));
-//                    String linkUrl = urlsn.getProtocol() + "://" + urlsn.getHost();
-
-                    System.out.println(linkDepth + " : " + i + "/" + links.size() + " : " + urlsn);
-                    // only pages that lead to another page
-//                    if (!pageUrl.startsWith(linkUrl)) {
+                    System.out.println(linkDepth + " : " + (i + 1) + "/" + links.size() + " : " + urlsn);
                     try {
                         Document linkDocument = Jsoup.connect(urlsn.toString()).get();
-                        analyze(linkDocument, linkDepth - 1, urlsn.toString());
+                        analyze(urlsn.toString(), linkDocument, linkDepth - 1);
                     } catch (HttpStatusException e) {
                         if (e.getStatusCode() == 404) {
                             webpageMetric.addBrokenLink(urlsn.toString());
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-//                        }
                     }
                 } catch (MalformedURLException ignored) {
-
+                    // ignore non conform URLs
                 }
             }
         }
@@ -125,6 +119,7 @@ public class WebpageAnalyzer {
 
     /**
      * Checks if CLI arguments are well formed and given in the expected order.
+     *
      * @param args The parameter array to check
      * @return constructed WebpageAnalyzer
      * @throws IllegalArgumentException thrown if malformed CLI arguments are found
@@ -140,13 +135,13 @@ public class WebpageAnalyzer {
 
         url = args[0];
 
-        if(args.length == 1) {
+        if (args.length == 1) {
             return new WebpageAnalyzer(url);
         } else {
             try {
                 recursionDepth = Integer.parseInt(args[1]);
                 return new WebpageAnalyzer(url, recursionDepth);
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 WebpageAnalyzer.cliState = CliParsingState.ARGUMENT_PARSING_ERROR;
                 throw new IllegalArgumentException("Recursion depth must be a number!");
             }
