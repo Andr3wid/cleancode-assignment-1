@@ -84,7 +84,6 @@ public class WebpageMetric {
         return imageCount;
     }
 
-
     public int getLinkCount() {
         return linkCount;
     }
@@ -100,12 +99,12 @@ public class WebpageMetric {
     @Override
     public String toString() {
         return "WebpageMetric{" +
-                "brokenLinks=" + brokenLinks +
+                "url=" + url +
+                ", brokenLinks=" + brokenLinks +
                 ", linkCount=" + linkCount +
                 ", imageCount=" + imageCount +
                 ", videoCount=" + videoCount +
                 ", wordCount=" + wordCount +
-                ", url='" + url + '\'' +
-                '}';
+                "}\n";
     }
 }
