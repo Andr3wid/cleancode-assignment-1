@@ -18,20 +18,20 @@ import static org.mockito.Mockito.*;
 
 class WebpageAnalyzerTest {
 
-    static String andrefURL = "http://andref.xyz";
-    static String andref404URL = "http://andref.xyz/invalidpage/";
-    static String nginxOrgURL = "http://nginx.org/";
-    static String nginxComURL = "http://nginx.com/";
+    String andrefURL = "http://andref.xyz";
+    String andref404URL = "http://andref.xyz/invalidpage/";
+    String nginxOrgURL = "http://nginx.org/";
+    String nginxComURL = "http://nginx.com/";
 
     Document andrefDoc;
     Document andref404Doc;
     Document nginxOrgDoc;
     Document nginxComDoc;
 
-    HttpConnection mockedCon;
-    HttpConnection mockedCon2;
-    HttpConnection mockedCon3;
-    HttpConnection mockedCon4;
+    HttpConnection mockedAndref;
+    HttpConnection mockNginxOrg;
+    HttpConnection mockNginxCom;
+    HttpConnection mockAndref404;
 
     public WebpageAnalyzerTest() throws IOException {
 
@@ -45,19 +45,19 @@ class WebpageAnalyzerTest {
         nginxOrgDoc = Parser.parse(nginxOrgHTML, nginxOrgURL);
         nginxComDoc = Parser.parse(nginxComHTML, nginxComURL);
 
-        mockedCon = mock(HttpConnection.class);
-        mockedCon2 = mock(HttpConnection.class);
-        mockedCon3 = mock(HttpConnection.class);
-        mockedCon4 = mock(HttpConnection.class);
+        mockedAndref = mock(HttpConnection.class);
+        mockNginxOrg = mock(HttpConnection.class);
+        mockNginxCom = mock(HttpConnection.class);
+        mockAndref404 = mock(HttpConnection.class);
 
-        when(Jsoup.connect(andrefURL)).thenReturn(mockedCon);
-        when(Jsoup.connect(nginxOrgURL)).thenReturn(mockedCon2);
-        when(Jsoup.connect(nginxComURL)).thenReturn(mockedCon3);
-        when(Jsoup.connect(andref404URL)).thenReturn(mockedCon4);
+        when(Jsoup.connect(andrefURL)).thenReturn(mockedAndref);
+        when(Jsoup.connect(nginxOrgURL)).thenReturn(mockNginxOrg);
+        when(Jsoup.connect(nginxComURL)).thenReturn(mockNginxCom);
+        when(Jsoup.connect(andref404URL)).thenReturn(mockAndref404);
 
-        when(mockedCon2.get()).thenReturn(nginxOrgDoc);
-        when(mockedCon3.get()).thenReturn(nginxComDoc);
-        when(mockedCon4.get()).thenThrow(new HttpStatusException("", 404, andref404URL));
+        when(mockNginxOrg.get()).thenReturn(nginxOrgDoc);
+        when(mockNginxCom.get()).thenReturn(nginxComDoc);
+        when(mockAndref404.get()).thenThrow(new HttpStatusException("", 404, andref404URL));
     }
 
     @BeforeAll
@@ -66,11 +66,11 @@ class WebpageAnalyzerTest {
     }
 
     private void setupTestsuite() throws IOException {
-        when(mockedCon.get()).thenReturn(andrefDoc);
+        when(mockedAndref.get()).thenReturn(andrefDoc);
     }
 
     private void setupTestsuite404() throws IOException {
-        when(mockedCon.get()).thenReturn(andref404Doc);
+        when(mockedAndref.get()).thenReturn(andref404Doc);
     }
 
     @Test
@@ -79,7 +79,11 @@ class WebpageAnalyzerTest {
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
         webpageAnalyzer.analyze();
 
-        String expected = "[WebpageMetric{brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124, url='http://nginx.org/'}, WebpageMetric{brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278, url='http://nginx.com/'}, WebpageMetric{brokenLinks=[], linkCount=2, imageCount=0, videoCount=0, wordCount=43, url='http://andref.xyz'}]";
+        String expected = """
+                [WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}
+                , WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}
+                , WebpageMetric{url=http://andref.xyz, brokenLinks=[], linkCount=2, imageCount=0, videoCount=0, wordCount=43}
+                ]""";
         assertEquals(expected, webpageAnalyzer.getWebpageMetrics().toString());
     }
 
@@ -89,7 +93,11 @@ class WebpageAnalyzerTest {
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
         webpageAnalyzer.analyze();
 
-        String expected = "[WebpageMetric{brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124, url='http://nginx.org/'}, WebpageMetric{brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278, url='http://nginx.com/'}, WebpageMetric{brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43, url='http://andref.xyz'}]";
+        String expected = """
+                [WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}
+                , WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}
+                , WebpageMetric{url=http://andref.xyz, brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43}
+                ]""";
         assertEquals(expected, webpageAnalyzer.getWebpageMetrics().toString());
     }
 }

@@ -24,20 +24,19 @@ class WebpageMetricTest {
 
         andrefDoc = Parser.parse(andrefHTML, andrefURL);
         nginxComDoc = Parser.parse(nginxComHTML, nginxComURL);
-
     }
 
     @Test
     public void testAndref() {
         WebpageMetric webpageMetric = new WebpageMetric(andrefDoc, andrefURL);
-        String expected = "WebpageMetric{brokenLinks=[], linkCount=0, imageCount=0, videoCount=0, wordCount=43, url='http://andref.xyz'}";
+        String expected = "WebpageMetric{url=http://andref.xyz, brokenLinks=[], linkCount=0, imageCount=0, videoCount=0, wordCount=43}\n";
         assertEquals(expected, webpageMetric.toString());
     }
 
     @Test
     public void testNginxCom() {
         WebpageMetric webpageMetric = new WebpageMetric(nginxComDoc, nginxComURL);
-        String expected = "WebpageMetric{brokenLinks=[], linkCount=0, imageCount=62, videoCount=0, wordCount=1278, url='http://nginx.com/'}";
+        String expected = "WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=0, imageCount=62, videoCount=0, wordCount=1278}\n";
         assertEquals(expected, webpageMetric.toString());
     }
 }
