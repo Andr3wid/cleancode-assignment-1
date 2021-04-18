@@ -1,10 +1,7 @@
 package assignment1;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.net.MalformedURLException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,21 +15,21 @@ public class CliParsingTests {
     }
 
     @Test
-    public void noCliArguments() throws MalformedURLException {
+    public void noCliArguments() {
         String[] args = {};
         WebpageAnalyzer.main(args);
         assertEquals(CliParsingState.ILLEGAL_ARGUMENT_COUNT, WebpageAnalyzer.getCliState());
     }
 
     @Test
-    public void tooManyCliArguments() throws MalformedURLException {
+    public void tooManyCliArguments() {
         String[] args = {simpleUrl, "4", "pizza"};
         WebpageAnalyzer.main(args);
         assertEquals(CliParsingState.ILLEGAL_ARGUMENT_COUNT, WebpageAnalyzer.getCliState());
     }
 
     @Test
-    public void defaultRecursionDepth() throws MalformedURLException {
+    public void defaultRecursionDepth() {
         String[] args = {simpleUrl};
         WebpageAnalyzer.main(args);
         assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzer.getCliState());
@@ -40,7 +37,7 @@ public class CliParsingTests {
     }
 
     @Test
-    public void customRecursionDepth() throws MalformedURLException {
+    public void customRecursionDepth() {
         int maxDepth = 4;
 
         String[] args = {simpleUrl, String.valueOf(maxDepth)};
