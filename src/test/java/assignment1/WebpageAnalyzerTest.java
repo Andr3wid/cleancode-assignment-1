@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.helper.HttpConnection;
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -17,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 class WebpageAnalyzerTest {
+
+    static MockedStatic<Jsoup> jsoupMockedStatic;
 
     String andrefURL = "http://andref.xyz";
     String andref404URL = "http://andref.xyz/invalidpage/";
@@ -62,7 +65,12 @@ class WebpageAnalyzerTest {
 
     @BeforeAll
     private static void setupStaticMock() {
-        MockedStatic<Jsoup> jsoupMockedStatic = mockStatic(Jsoup.class);
+        jsoupMockedStatic = mockStatic(Jsoup.class);
+    }
+
+    @AfterAll
+    private static void teardownStaticMock() {
+        jsoupMockedStatic.close();
     }
 
     private void setupTestsuite() throws IOException {
