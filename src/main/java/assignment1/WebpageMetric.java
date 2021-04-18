@@ -17,7 +17,6 @@ public class WebpageMetric {
     private int wordCount;
     private final String url;
 
-
     public WebpageMetric(Document document, String url) {
         this.url = url;
         brokenLinks = new ArrayList<>();
@@ -25,22 +24,11 @@ public class WebpageMetric {
         getMetrics(document);
     }
 
-    public void addBrokenLink(String url) {
-        brokenLinks.add(url);
-    }
-
-    public List<String> getBrokenLinks() {
-        return brokenLinks;
-    }
-
-    public void setLinkCount(int linkCount) {
-        this.linkCount = linkCount;
-    }
 
     private void getMetrics(Document document) {
         imageCount = document.body().select("img").size();
         videoCount = document.body().select("video").size();
-        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(document);
+        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(document,"title");
         String strippedText = this.preProcessText(htmlWithoutTitle.text());
         wordCount = strippedText.split(" ").length;
     }
@@ -51,9 +39,9 @@ public class WebpageMetric {
      * @param doc document to be removed from
      * @return a stripped copy of the document
      */
-    private Document removeHtmlElementsBySelector(Document doc) {
+    public Document removeHtmlElementsBySelector(Document doc,String selector) {
         Document strippedDoc = doc.clone();
-        Elements matchedElements = strippedDoc.select("title");
+        Elements matchedElements = strippedDoc.select(selector);
 
         for (Element element : matchedElements) {
             element.remove();
@@ -70,14 +58,25 @@ public class WebpageMetric {
      * @param text the text to be processed
      * @return the text with removed tokens and whitespace
      */
-    private String preProcessText(String text) {
-        // TODO: find regex that works for all non-english letter (e.g. scandinavian or balkan-languages, japanese ...)
+    public String preProcessText(String text) {
+        // NOTE: regex works only for english letters  not for (scandinavian or balkan-languages, japanese ...)
         text = text.replaceAll("[^a-zA-zöüäÖÜÄß]", " ");
-        // TODO: Check if trim can be removed.
         text = text.trim();
         text = text.replaceAll(" +", " ");
 
         return text;
+    }
+
+    public void addBrokenLink(String url) {
+        brokenLinks.add(url);
+    }
+
+    public List<String> getBrokenLinks() {
+        return brokenLinks;
+    }
+
+    public void setLinkCount(int linkCount) {
+        this.linkCount = linkCount;
     }
 
     public int getImageCount() {
