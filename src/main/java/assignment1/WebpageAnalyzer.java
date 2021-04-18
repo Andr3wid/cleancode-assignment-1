@@ -107,24 +107,22 @@ public class WebpageAnalyzer {
         webpageMetric.setLinkCount(links.size());
 
         if (linkDepth != 0) {
-            System.out.println("links to visit: " + links.size());
-            for (int i = 0; i < links.size(); i++) {
-                Element link = links.get(i);
+            System.out.println("links to visit: " + links.size() + " for " + documentUrl);
+            int i = 1;
+            for (Element link : links) {
+                URL linkURL = null;
                 try {
-                    URL linkURL = new URL(link.attr("href"));
-                    System.out.println(linkDepth + " : " + (i + 1) + "/" + links.size() + " : " + linkURL);
-                    try {
-                        Document linkDocument = Jsoup.connect(linkURL.toString()).get();
-                        analyze(linkURL.toString(), linkDocument, linkDepth - 1);
-                    } catch (HttpStatusException e) {
-                        if (e.getStatusCode() == 404) {
-                            webpageMetric.addBrokenLink(linkURL.toString());
-                        }
-                    } catch (IOException e) {
-                        // ignore non html types
+                    linkURL = new URL(link.attr("href"));
+                    System.out.println(linkDepth + " : " + (i++) + "/" + links.size() + " : " + linkURL);
+
+                    Document linkDocument = Jsoup.connect(linkURL.toString()).get();
+                    analyze(linkURL.toString(), linkDocument, linkDepth - 1);
+                } catch (HttpStatusException e) {
+                    if (e.getStatusCode() == 404) {
+                        webpageMetric.addBrokenLink(linkURL.toString());
                     }
-                } catch (MalformedURLException ignored) {
-                    // ignore non conform URLs
+                } catch (IOException e) {
+                    // ignore non conform URLs and non html types of response
                 }
             }
         }
