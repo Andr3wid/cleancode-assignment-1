@@ -71,28 +71,8 @@ public class WebpageMetric {
         brokenLinks.add(url);
     }
 
-    public List<String> getBrokenLinks() {
-        return brokenLinks;
-    }
-
     public void setLinkCount(int linkCount) {
         this.linkCount = linkCount;
-    }
-
-    public int getImageCount() {
-        return imageCount;
-    }
-
-    public int getLinkCount() {
-        return linkCount;
-    }
-
-    public int getVideoCount() {
-        return videoCount;
-    }
-
-    public int getWordCount() {
-        return wordCount;
     }
 
     @Override
