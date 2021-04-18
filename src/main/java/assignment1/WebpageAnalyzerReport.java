@@ -6,8 +6,8 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 public class WebpageAnalyzerReport {
-    private StringBuilder content;
-    private File reportFile;
+    private final StringBuilder content;
+    private final File reportFile;
     private FileWriter reportFileWriter;
 
     public WebpageAnalyzerReport(String filePath) {
@@ -45,6 +45,6 @@ public class WebpageAnalyzerReport {
     }
 
     public String getFileName() {
-        return this.reportFile.getName();
+        return this.reportFile.toString();
     }
 }
