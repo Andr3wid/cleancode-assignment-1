@@ -29,7 +29,7 @@ public class WebpageAnalyzer {
      * Specifies the level of recursion to follow links on the {@link WebpageAnalyzer#url}
      * Defaults to 2
      */
-    private final int maxLinkDepth;
+    private int maxLinkDepth;
 
     /**
      * List for the Metrics of all analyzed webpages
@@ -53,13 +53,12 @@ public class WebpageAnalyzer {
 
 
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
+        this(url);
         this.maxLinkDepth = linkDepth;
-        webpageMetrics = new ArrayList<>();
-        this.url = new URL(url);
     }
 
     public WebpageAnalyzer(String url) throws MalformedURLException {
-        this.maxLinkDepth = 2;
+        this.maxLinkDepth = DEFAULT_RECURSION_DEPTH;
         webpageMetrics = new ArrayList<>();
         this.url = new URL(url);
     }
