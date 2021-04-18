@@ -45,6 +45,11 @@ public class WebpageAnalyzer {
      */
     private static CliParsingState cliState = CliParsingState.NOT_INITIALIZED;
 
+    /**
+     * Report-object that is used to store content and generate a file-based report.
+     */
+    private static  WebpageAnalyzerReport report = new WebpageAnalyzerReport();
+
 
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
         this.maxLinkDepth = linkDepth;
@@ -67,6 +72,7 @@ public class WebpageAnalyzer {
             printUsageTextOnError(e.getMessage());
         }
 
+        // analyze the given page(s)
         try {
             if (rootPage != null) {
                 rootPage.analyze();
@@ -74,6 +80,15 @@ public class WebpageAnalyzer {
         } catch (IOException e) {
             System.out.println("Provided url is not reachable : " + e.getMessage());
         }
+
+        // write the collected content into report-file
+        try {
+            report.writeReport();
+        } catch (IOException e) {
+            System.out.println("Error while trying to write report-file.");
+        }
+
+
     }
 
     /**
@@ -115,6 +130,7 @@ public class WebpageAnalyzer {
             }
         }
         webpageMetrics.add(webpageMetric);
+        report.addToReport(webpageMetric.toString());
     }
 
     /**
@@ -129,7 +145,7 @@ public class WebpageAnalyzer {
         int recursionDepth;
 
         if (args.length < 1 || args.length > 2) {
-            WebpageAnalyzer.cliState = CliParsingState.ILLEGAL_ARGUMENT_COUNT;
+            cliState = CliParsingState.ILLEGAL_ARGUMENT_COUNT;
             throw new IllegalArgumentException("Illegal argument count!");
         }
 
@@ -141,8 +157,8 @@ public class WebpageAnalyzer {
             try {
                 recursionDepth = Integer.parseInt(args[1]);
                 return new WebpageAnalyzer(url, recursionDepth);
-            } catch (NumberFormatException nfe) {
-                WebpageAnalyzer.cliState = CliParsingState.ARGUMENT_PARSING_ERROR;
+            } catch(NumberFormatException nfe) {
+                cliState = CliParsingState.ARGUMENT_PARSING_ERROR;
                 throw new IllegalArgumentException("Recursion depth must be a number!");
             }
         }
