@@ -32,5 +32,4 @@ class WebpageAnalyzerReportTest {
         String fileContent = Files.readString(Path.of(filepath));
         assertEquals("test", fileContent);
     }
-
 }
