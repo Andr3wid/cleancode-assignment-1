@@ -17,8 +17,8 @@ public class WebpageMetric {
     private int wordCount;
     private final String url;
 
-    public WebpageMetric(Document document, String url) {
-        this.url = url;
+    public WebpageMetric(Document document) {
+        this.url = document.location();
         brokenLinks = new ArrayList<>();
         imageCount = 0;
         getMetrics(document);

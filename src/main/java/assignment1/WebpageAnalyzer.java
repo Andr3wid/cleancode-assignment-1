@@ -27,7 +27,7 @@ public class WebpageAnalyzer {
 
     /**
      * Specifies the level of recursion to follow links on the {@link WebpageAnalyzer#url}
-     * Defaults to 2
+     * Defaults to {@link WebpageAnalyzer#DEFAULT_RECURSION_DEPTH}
      */
     private int maxLinkDepth;
 
@@ -100,7 +100,7 @@ public class WebpageAnalyzer {
     }
 
     private void analyze(Document document, int linkDepth) {
-        WebpageMetric webpageMetric = new WebpageMetric(document, document.location());
+        WebpageMetric webpageMetric = new WebpageMetric(document);
 
         Elements links = document.select("a");
         webpageMetric.setLinkCount(links.size());

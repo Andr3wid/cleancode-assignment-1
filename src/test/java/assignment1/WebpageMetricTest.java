@@ -28,35 +28,35 @@ class WebpageMetricTest {
 
     @Test
     public void testAndref() {
-        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc, andrefURL);
+        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc);
         String expected = "WebpageMetric{url=http://andref.xyz, brokenLinks=[], linkCount=0, imageCount=0, videoCount=0, wordCount=43}\n";
         assertEquals(expected, webpageMetric.toString());
     }
 
     @Test
     public void testNginxCom() {
-        WebpageMetric webpageMetric = new WebpageMetric(nginxComDoc, nginxComURL);
+        WebpageMetric webpageMetric = new WebpageMetric(nginxComDoc);
         String expected = "WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=0, imageCount=62, videoCount=0, wordCount=1278}\n";
         assertEquals(expected, webpageMetric.toString());
     }
 
     @Test
     public void testRemoveTitleFormDoc() {
-        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc, andrefURL);
+        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc);
         Document strippedDoc = webpageMetric.removeHtmlElementsBySelector(andrefDoc, "title");
         assertEquals(0, strippedDoc.select("title").size());
     }
 
     @Test
     public void testPreprocessTextEN() {
-        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc, andrefURL);
+        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc);
         String preprocessedString = webpageMetric.preProcessText("   This    is    a     test     string.   ");
         assertEquals("This is a test string", preprocessedString);
     }
 
     @Test
     public void testPreprocessTextNonEN() {
-        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc, andrefURL);
+        WebpageMetric webpageMetric = new WebpageMetric(andrefDoc);
         String preprocessedString = webpageMetric.preProcessText("   This is a     test string with ǯ Ì¾ » ì    non EN characters");
         assertEquals("This is a test string with non EN characters", preprocessedString);
     }
