@@ -26,7 +26,8 @@ public class WebpageAnalyzer {
     private final URL url;
 
     /**
-     * Specifies the level of recursion to follow links on the {@link this.url}
+     * Specifies the level of recursion to follow links on the {@link WebpageAnalyzer#url}
+     * Defaults to 2
      */
     private final int maxLinkDepth;
 
@@ -48,7 +49,7 @@ public class WebpageAnalyzer {
     /**
      * Report-object that is used to store content and generate a file-based report.
      */
-    private static  WebpageAnalyzerReport report = new WebpageAnalyzerReport();
+    private static final WebpageAnalyzerReport report = new WebpageAnalyzerReport();
 
 
     public WebpageAnalyzer(String url, int linkDepth) throws MalformedURLException {
@@ -87,8 +88,6 @@ public class WebpageAnalyzer {
         } catch (IOException e) {
             System.out.println("Error while trying to write report-file.");
         }
-
-
     }
 
     /**
@@ -97,8 +96,8 @@ public class WebpageAnalyzer {
      * @throws IOException see {@link Connection#get()}
      */
     public void analyze() throws IOException {
-        Document document = Jsoup.connect(url.toString()).get();
-        analyze(url.toString(), document, maxLinkDepth);
+        Document rootDocument = Jsoup.connect(url.toString()).get();
+        analyze(url.toString(), rootDocument, maxLinkDepth);
     }
 
     private void analyze(String documentUrl, Document document, int linkDepth) {
@@ -112,17 +111,17 @@ public class WebpageAnalyzer {
             for (int i = 0; i < links.size(); i++) {
                 Element link = links.get(i);
                 try {
-                    URL urlsn = new URL(link.attr("href"));
-                    System.out.println(linkDepth + " : " + (i + 1) + "/" + links.size() + " : " + urlsn);
+                    URL linkURL = new URL(link.attr("href"));
+                    System.out.println(linkDepth + " : " + (i + 1) + "/" + links.size() + " : " + linkURL);
                     try {
-                        Document linkDocument = Jsoup.connect(urlsn.toString()).get();
-                        analyze(urlsn.toString(), linkDocument, linkDepth - 1);
+                        Document linkDocument = Jsoup.connect(linkURL.toString()).get();
+                        analyze(linkURL.toString(), linkDocument, linkDepth - 1);
                     } catch (HttpStatusException e) {
                         if (e.getStatusCode() == 404) {
-                            webpageMetric.addBrokenLink(urlsn.toString());
+                            webpageMetric.addBrokenLink(linkURL.toString());
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        // ignore non html types
                     }
                 } catch (MalformedURLException ignored) {
                     // ignore non conform URLs
@@ -157,7 +156,7 @@ public class WebpageAnalyzer {
             try {
                 recursionDepth = Integer.parseInt(args[1]);
                 return new WebpageAnalyzer(url, recursionDepth);
-            } catch(NumberFormatException nfe) {
+            } catch (NumberFormatException nfe) {
                 cliState = CliParsingState.ARGUMENT_PARSING_ERROR;
                 throw new IllegalArgumentException("Recursion depth must be a number!");
             }
