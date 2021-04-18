@@ -28,8 +28,8 @@ public class WebpageMetric {
     private void getMetrics(Document document) {
         imageCount = document.body().select("img").size();
         videoCount = document.body().select("video").size();
-        Document htmlWithoutTitle = this.removeHtmlElementsBySelector(document,"title");
-        String strippedText = this.preProcessText(htmlWithoutTitle.text());
+        Document htmlWithoutTitle = removeHtmlElementsBySelector(document, "title");
+        String strippedText = preProcessText(htmlWithoutTitle.text());
         wordCount = strippedText.split(" ").length;
     }
 
@@ -39,7 +39,7 @@ public class WebpageMetric {
      * @param doc document to be removed from
      * @return a stripped copy of the document
      */
-    public Document removeHtmlElementsBySelector(Document doc,String selector) {
+    public Document removeHtmlElementsBySelector(Document doc, String selector) {
         Document strippedDoc = doc.clone();
         Elements matchedElements = strippedDoc.select(selector);
 

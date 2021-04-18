@@ -41,10 +41,10 @@ public class WebpageAnalyzerReport {
     }
 
     public String getReportContent() {
-        return this.content.toString();
+        return content.toString();
     }
 
     public String getFileName() {
-        return this.reportFile.toString();
+        return reportFile.toString();
     }
 }

@@ -177,7 +177,7 @@ public class WebpageAnalyzer {
     }
 
     public int getMaxLinkDepth() {
-        return this.maxLinkDepth;
+        return maxLinkDepth;
     }
 
     public static CliParsingState getCliState() {

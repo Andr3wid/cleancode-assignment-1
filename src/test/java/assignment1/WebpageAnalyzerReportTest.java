@@ -12,16 +12,16 @@ class WebpageAnalyzerReportTest {
     private final String filepath = "build/testreport.txt";
 
     @Test
-    public void testInstantiate(){
+    public void testInstantiate() {
         WebpageAnalyzerReport webpageAnalyzerReport = new WebpageAnalyzerReport(filepath);
-        assertEquals(filepath,webpageAnalyzerReport.getFileName());
+        assertEquals(filepath, webpageAnalyzerReport.getFileName());
     }
 
     @Test
-    public void testAddAndGet(){
+    public void testAddAndGet() {
         WebpageAnalyzerReport webpageAnalyzerReport = new WebpageAnalyzerReport(filepath);
         webpageAnalyzerReport.addToReport("test");
-        assertEquals("test",webpageAnalyzerReport.getReportContent());
+        assertEquals("test", webpageAnalyzerReport.getReportContent());
     }
 
     @Test
