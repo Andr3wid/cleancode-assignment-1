@@ -88,4 +88,13 @@ public class CliParsingTests {
         assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzer.getCliState());
         assertEquals(maxDepth, WebpageAnalyzer.getRootPageAnalyzer().getMaxLinkDepth());
     }
+
+    @Test
+    public void invalidDepth() {
+
+        String[] args = {simpleUrl, "a"};
+        WebpageAnalyzer.main(args);
+
+        assertEquals(CliParsingState.ARGUMENT_PARSING_ERROR, WebpageAnalyzer.getCliState());
+    }
 }
