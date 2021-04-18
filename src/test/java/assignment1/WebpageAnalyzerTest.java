@@ -104,7 +104,7 @@ class WebpageAnalyzerTest {
         String expected = """
                 [WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}
                 , WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}
-                , WebpageMetric{url=http://andref.xyz, brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43}
+                , WebpageMetric{url=http://andref.xyz/invalidpage/, brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43}
                 ]""";
         assertEquals(expected, webpageAnalyzer.getWebpageMetrics().toString());
     }

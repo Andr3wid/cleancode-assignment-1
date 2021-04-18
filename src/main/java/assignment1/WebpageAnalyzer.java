@@ -97,17 +97,17 @@ public class WebpageAnalyzer {
      */
     public void analyze() throws IOException {
         Document rootDocument = Jsoup.connect(url.toString()).get();
-        analyze(url.toString(), rootDocument, maxLinkDepth);
+        analyze(rootDocument, maxLinkDepth);
     }
 
-    private void analyze(String documentUrl, Document document, int linkDepth) {
-        WebpageMetric webpageMetric = new WebpageMetric(document, documentUrl);
+    private void analyze(Document document, int linkDepth) {
+        WebpageMetric webpageMetric = new WebpageMetric(document, document.location());
 
         Elements links = document.select("a");
         webpageMetric.setLinkCount(links.size());
 
         if (linkDepth != 0) {
-            System.out.println("links to visit: " + links.size() + " for " + documentUrl);
+            System.out.println("links to visit: " + links.size() + " for " + document.location());
             int i = 1;
             for (Element link : links) {
                 URL linkURL = null;
@@ -116,7 +116,7 @@ public class WebpageAnalyzer {
                     System.out.println(linkDepth + " : " + (i++) + "/" + links.size() + " : " + linkURL);
 
                     Document linkDocument = Jsoup.connect(linkURL.toString()).get();
-                    analyze(linkURL.toString(), linkDocument, linkDepth - 1);
+                    analyze(linkDocument, linkDepth - 1);
                 } catch (HttpStatusException e) {
                     if (e.getStatusCode() == 404) {
                         webpageMetric.addBrokenLink(linkURL.toString());
