@@ -7,6 +7,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 
@@ -36,7 +37,8 @@ class WebpageAnalyzerTest {
     HttpConnection mockNginxCom;
     HttpConnection mockAndref404;
 
-    public WebpageAnalyzerTest() throws IOException {
+    @BeforeEach
+    public void setup() throws IOException {
 
         String andrefHTML = Files.readString(Path.of("src/test/resources/andref.html"));
         String andref404HTML = Files.readString(Path.of("src/test/resources/andref404.html"));

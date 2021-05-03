@@ -2,6 +2,7 @@ package assignment1;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.parser.Parser;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -17,8 +18,8 @@ class WebpageMetricTest {
     Document andrefDoc;
     Document nginxComDoc;
 
-    public WebpageMetricTest() throws IOException {
-
+    @BeforeEach
+    public void setup() throws IOException {
         String andrefHTML = Files.readString(Path.of("src/test/resources/andref.html"));
         String nginxComHTML = Files.readString(Path.of("src/test/resources/nginxcom.html"));
 

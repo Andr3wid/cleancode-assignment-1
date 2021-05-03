@@ -27,7 +27,8 @@ public class CliParsingTests {
 
     HttpConnection mockedCon;
 
-    public CliParsingTests() throws IOException {
+    @BeforeEach
+    public void setup() throws IOException {
 
         String andrefNoLinksHTML = Files.readString(Path.of("src/test/resources/andrefNoLinks.html"));
 
