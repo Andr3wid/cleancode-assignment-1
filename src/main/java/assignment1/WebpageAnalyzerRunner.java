@@ -1,14 +1,24 @@
 package assignment1;
 
+import com.sun.source.doctree.SinceTree;
+
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 public class WebpageAnalyzerRunner {
     /**
      * Represents the current state of CLI parsing; mainly used for testability
      */
     private static CliParsingState cliState = CliParsingState.NOT_INITIALIZED;
+    private static final StringBuilder reportConcatenator = new StringBuilder();
+
+    private static final int MAX_THREADS = 10;
+    private static final int MAX_MIN_PER_PAGE = 5;
 
     /**
      * Root page analyzer provided by the URL entered as CLI argument
@@ -24,19 +34,32 @@ public class WebpageAnalyzerRunner {
             printUsageTextOnError(e.getMessage());
         }
 
+        ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
+
         // analyze the given page(s)
         try {
-            if (pages != null) {
-                // TODO: instantiate thread for each page
+            for(WebpageAnalyzer analyzer : pages) {
+                pool.execute(analyzer);
             }
         } catch (Exception e) {
             System.out.println("Provided url is not reachable : " + e.getMessage());
         }
 
+        pool.shutdown();
+
+
         // write the collected content into report-file
         try {
-            // report.writeReport();
-            // TODO: Merge reports of all threads
+            pool.awaitTermination((long) pages.size() * MAX_MIN_PER_PAGE, TimeUnit.MINUTES);
+            for(WebpageAnalyzer analyzer : pages) {
+                reportConcatenator.append("--- ").append(analyzer.getUrl().toString()).append("\n");
+                reportConcatenator.append(analyzer.getReport().getReportContent()).append("\n");
+            }
+
+            WebpageAnalyzerReport finalReport = new WebpageAnalyzerReport();
+            finalReport.addToReport(reportConcatenator.toString());
+            finalReport.writeReport();
+
         } catch (Exception e) {
             System.out.println("Error while trying to write report-file.");
         }

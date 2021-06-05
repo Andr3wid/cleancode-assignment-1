@@ -8,13 +8,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WebpageAnalyzer {
+public class WebpageAnalyzer implements Runnable {
 
     /**
      * Default recursion depth if not stated otherwise (via CLI args)
@@ -29,7 +28,7 @@ public class WebpageAnalyzer {
     /**
      * Report-object that is used to store content and generate a file-based report.
      */
-    private static final WebpageAnalyzerReport report = new WebpageAnalyzerReport();
+    private final WebpageAnalyzerReport report = new WebpageAnalyzerReport();
 
     /**
      * Specifies the level of recursion to follow links on the {@link WebpageAnalyzer#url}
@@ -59,11 +58,15 @@ public class WebpageAnalyzer {
     /**
      * Starts the recursive analyze process of the webpage
      *
-     * @throws IOException see {@link Connection#get()}
      */
-    public void analyze() throws IOException {
-        Document rootDocument = Jsoup.connect(url.toString()).get();
-        analyze(rootDocument, maxLinkDepth);
+    @Override
+    public void run() {
+        try {
+            Document rootDocument = Jsoup.connect(url.toString()).get();
+            analyze(rootDocument, maxLinkDepth);
+        } catch(IOException ioe) {
+            // TODO: Make visible that URL was invalid
+        }
     }
 
     private void analyze(Document document, int linkDepth) {
@@ -96,7 +99,6 @@ public class WebpageAnalyzer {
         report.addToReport(webpageMetric.toString());
     }
 
-
     public List<WebpageMetric> getWebpageMetrics() {
         return webpageMetrics;
     }
@@ -104,4 +106,13 @@ public class WebpageAnalyzer {
     public int getMaxLinkDepth() {
         return this.maxLinkDepth;
     }
+
+    public WebpageAnalyzerReport getReport() {
+        return this.report;
+    }
+
+    public URL getUrl() {
+        return this.url;
+    }
+
 }

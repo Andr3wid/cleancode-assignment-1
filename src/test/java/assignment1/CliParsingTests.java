@@ -110,8 +110,8 @@ public class CliParsingTests {
 
         assertEquals(args.length-1, WebpageAnalyzerRunner.getRootPages().size());
 
-        for(WebpageAnalyzer wa : WebpageAnalyzerRunner.getRootPages()) {
-            assertEquals(customDepth, wa.getMaxLinkDepth());
+        for(WebpageAnalyzer analyzer : WebpageAnalyzerRunner.getRootPages()) {
+            assertEquals(customDepth, analyzer.getMaxLinkDepth());
         }
     }
 }

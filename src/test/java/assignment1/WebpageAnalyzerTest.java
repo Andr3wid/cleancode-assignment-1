@@ -87,7 +87,7 @@ class WebpageAnalyzerTest {
     public void testSimple() throws IOException {
         setupTestsuite();
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
-        webpageAnalyzer.analyze();
+        webpageAnalyzer.run();
 
         String expected = "[WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}\n" +
                 ", WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}\n" +
@@ -99,7 +99,7 @@ class WebpageAnalyzerTest {
     public void testSimple404() throws IOException {
         setupTestsuite404();
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
-        webpageAnalyzer.analyze();
+        webpageAnalyzer.run();
 
         String expected = "[WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}\n" +
                 ", WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}\n" +
