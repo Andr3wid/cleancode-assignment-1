@@ -1,9 +1,5 @@
 package assignment1;
 
-import com.sun.source.doctree.SinceTree;
-
-import java.io.FileWriter;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -75,10 +71,11 @@ public class WebpageAnalyzerRunner {
     }
 
     private static void printUsageInfo() {
-        System.out.println("Usage: java -jar crawler.jar <URL> <RECURSION_DEPTH (optional; default=2)>");
+        System.out.println("Usage: java -jar crawler.jar <URL1> [<URL2> ... <URLn>] <RECURSION_DEPTH (optional; default=2)>");
         System.out.println("Examples:");
         System.out.println("\t * java -jar crawler.jar https://www.google.at");
         System.out.println("\t * java -jar crawler.jar https://www.google.at 3");
+        System.out.println("\t * java -jar crawler.jar https://www.google.at https://duckduckgo.com 3");
     }
 
 

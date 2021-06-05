@@ -1,6 +1,5 @@
 package assignment1;
 
-import org.jsoup.Connection;
 import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -65,7 +64,7 @@ public class WebpageAnalyzer implements Runnable {
             Document rootDocument = Jsoup.connect(url.toString()).get();
             analyze(rootDocument, maxLinkDepth);
         } catch(IOException ioe) {
-            // TODO: Make visible that URL was invalid
+            System.out.println("Error while trying to connect to " + url);
         }
     }
 
