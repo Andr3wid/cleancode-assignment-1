@@ -89,11 +89,9 @@ class WebpageAnalyzerTest {
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
         webpageAnalyzer.analyze();
 
-        String expected = """
-                [WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}
-                , WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}
-                , WebpageMetric{url=http://andref.xyz, brokenLinks=[], linkCount=2, imageCount=0, videoCount=0, wordCount=43}
-                ]""";
+        String expected = "[WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}\n" +
+                ", WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}\n" +
+                ", WebpageMetric{url=http://andref.xyz, brokenLinks=[], linkCount=2, imageCount=0, videoCount=0, wordCount=43}\n]";
         assertEquals(expected, webpageAnalyzer.getWebpageMetrics().toString());
     }
 
@@ -103,11 +101,9 @@ class WebpageAnalyzerTest {
         WebpageAnalyzer webpageAnalyzer = new WebpageAnalyzer(andrefURL, 1);
         webpageAnalyzer.analyze();
 
-        String expected = """
-                [WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}
-                , WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}
-                , WebpageMetric{url=http://andref.xyz, brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43}
-                ]""";
+        String expected = "[WebpageMetric{url=http://nginx.org/, brokenLinks=[], linkCount=57, imageCount=1, videoCount=0, wordCount=124}\n" +
+                ", WebpageMetric{url=http://nginx.com/, brokenLinks=[], linkCount=228, imageCount=62, videoCount=0, wordCount=1278}\n" +
+                ", WebpageMetric{url=http://andref.xyz, brokenLinks=[http://andref.xyz/invalidpage/], linkCount=3, imageCount=0, videoCount=0, wordCount=43}\n]";
         assertEquals(expected, webpageAnalyzer.getWebpageMetrics().toString());
     }
 }
