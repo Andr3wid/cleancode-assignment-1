@@ -54,29 +54,22 @@ public class CliParsingTests {
 
     @BeforeEach
     public void resetRootPageAnalyzer() {
-        WebpageAnalyzer.setCliState(CliParsingState.NOT_INITIALIZED);
+        WebpageAnalyzerRunner.setCliState(CliParsingState.NOT_INITIALIZED);
     }
 
     @Test
     public void noCliArguments() {
         String[] args = {};
-        WebpageAnalyzer.main(args);
-        assertEquals(CliParsingState.ILLEGAL_ARGUMENT_COUNT, WebpageAnalyzer.getCliState());
-    }
-
-    @Test
-    public void tooManyCliArguments() {
-        String[] args = {simpleUrl, "4", "pizza"};
-        WebpageAnalyzer.main(args);
-        assertEquals(CliParsingState.ILLEGAL_ARGUMENT_COUNT, WebpageAnalyzer.getCliState());
+        WebpageAnalyzerRunner.main(args);
+        assertEquals(CliParsingState.ILLEGAL_ARGUMENT_COUNT, WebpageAnalyzerRunner.getCliState());
     }
 
     @Test
     public void defaultRecursionDepth() {
         String[] args = {simpleUrl};
-        WebpageAnalyzer.main(args);
-        assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzer.getCliState());
-        assertEquals(WebpageAnalyzer.DEFAULT_RECURSION_DEPTH, WebpageAnalyzer.getRootPageAnalyzer().getMaxLinkDepth());
+        WebpageAnalyzerRunner.main(args);
+        assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzerRunner.getCliState());
+        assertEquals(WebpageAnalyzer.DEFAULT_RECURSION_DEPTH, WebpageAnalyzerRunner.getRootPages().get(0).getMaxLinkDepth());
     }
 
     @Test
@@ -84,18 +77,41 @@ public class CliParsingTests {
         int maxDepth = 4;
 
         String[] args = {simpleUrl, String.valueOf(maxDepth)};
-        WebpageAnalyzer.main(args);
+        WebpageAnalyzerRunner.main(args);
 
-        assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzer.getCliState());
-        assertEquals(maxDepth, WebpageAnalyzer.getRootPageAnalyzer().getMaxLinkDepth());
+        assertEquals(CliParsingState.PARSING_SUCCESS, WebpageAnalyzerRunner.getCliState());
+        assertEquals(maxDepth, WebpageAnalyzerRunner.getRootPages().get(0).getMaxLinkDepth());
     }
 
     @Test
-    public void invalidDepth() {
+    public void negativeRecursionDepth() {
 
-        String[] args = {simpleUrl, "a"};
-        WebpageAnalyzer.main(args);
+        String[] args = {simpleUrl, "-1"};
+        WebpageAnalyzerRunner.main(args);
 
-        assertEquals(CliParsingState.ARGUMENT_PARSING_ERROR, WebpageAnalyzer.getCliState());
+        assertEquals(WebpageAnalyzer.DEFAULT_RECURSION_DEPTH ,WebpageAnalyzerRunner.getRootPages().get(0).getMaxLinkDepth());
+    }
+
+    @Test
+    public void multipleUrlsNoDepth() {
+        String[] args = {simpleUrl, simpleUrl};
+
+        WebpageAnalyzerRunner.main(args);
+
+        assertEquals(args.length, WebpageAnalyzerRunner.getRootPages().size());
+    }
+
+    @Test
+    public void multipleUrlsCustomDepth() {
+        int customDepth = 4;
+        String[] args = {simpleUrl, simpleUrl, String.valueOf(customDepth)};
+
+        WebpageAnalyzerRunner.main(args);
+
+        assertEquals(args.length-1, WebpageAnalyzerRunner.getRootPages().size());
+
+        for(WebpageAnalyzer wa : WebpageAnalyzerRunner.getRootPages()) {
+            assertEquals(customDepth, wa.getMaxLinkDepth());
+        }
     }
 }
