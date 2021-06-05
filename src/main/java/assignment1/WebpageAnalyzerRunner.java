@@ -30,11 +30,16 @@ public class WebpageAnalyzerRunner {
             printUsageTextOnError(e.getMessage());
         }
 
-        ExecutorService pool = Executors.newFixedThreadPool(MAX_THREADS);
+        ExecutorService pool = startConcurrentCrawling(pages, MAX_THREADS);
+        mergeReports(pool);
+    }
+
+    public static ExecutorService startConcurrentCrawling(ArrayList<WebpageAnalyzer> pagesToAnalyze, int maxThreads) {
+        ExecutorService pool = Executors.newFixedThreadPool(maxThreads);
 
         // analyze the given page(s)
         try {
-            for(WebpageAnalyzer analyzer : pages) {
+            for(WebpageAnalyzer analyzer : pagesToAnalyze) {
                 pool.execute(analyzer);
             }
         } catch (Exception e) {
@@ -43,6 +48,10 @@ public class WebpageAnalyzerRunner {
 
         pool.shutdown();
 
+        return pool;
+    }
+
+    public static void mergeReports(ExecutorService pool) {
 
         // write the collected content into report-file
         try {
