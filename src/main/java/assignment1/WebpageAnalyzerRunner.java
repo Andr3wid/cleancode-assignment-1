@@ -14,7 +14,7 @@ public class WebpageAnalyzerRunner {
     private static final StringBuilder reportConcatenator = new StringBuilder();
 
     private static final int MAX_THREADS = 10;
-    private static final int MAX_MIN_PER_PAGE = 5;
+    private static final int MAX_MINUTES_PER_PAGE = 5;
 
     /**
      * Root page analyzer provided by the URL entered as CLI argument
@@ -55,7 +55,7 @@ public class WebpageAnalyzerRunner {
 
         // write the collected content into report-file
         try {
-            pool.awaitTermination((long) pages.size() * MAX_MIN_PER_PAGE, TimeUnit.MINUTES);
+            pool.awaitTermination((long) pages.size() * MAX_MINUTES_PER_PAGE, TimeUnit.MINUTES);
             for(WebpageAnalyzer analyzer : pages) {
                 reportConcatenator.append("--- ").append(analyzer.getUrl().toString()).append("\n");
                 reportConcatenator.append(analyzer.getReport().getReportContent()).append("\n");
